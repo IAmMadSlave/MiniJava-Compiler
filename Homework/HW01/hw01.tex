@@ -1,0 +1,195 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{amsmath}
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{%
+\parbox{\textwidth}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}\vskip-4pt}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName} % Top left header
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle} % Top center header
+\rhead{\hmwkDueDate} % Top right header
+\lfoot{\lastxmark} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+}
+
+%----------------------------------------------------------------------------------------
+%   COLORS AND LANGUAGAGE
+%----------------------------------------------------------------------------------------
+
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{turqusnumbers}{rgb}{0.17,0.57,0.69}
+\definecolor{redstrings}{rgb}{0.5,0,0}
+
+\lstdefinelanguage{FSharp}
+                {morekeywords={let, new, match, with, rec, open, module, namespace, type, of,
+                member, and, for, in, do, begin, end, fun, function, try, mutable, if, then,
+                else},
+                keywordstyle=\color{bluekeywords},
+                sensitive=false,
+                morecomment=[l][\color{greencomments}]{///},
+                morecomment=[l][\color{greencomments}]{//},
+                morecomment=[s][\color{greencomments}]{{(*}{*)}},
+                morestring=[b]",
+                stringstyle=\color{redstrings}
+                }
+
+\lstset{
+    frame=lrb,xleftmargin=\fboxsep,xrightmargin=-\fboxsep,language=FSharp,basicstyle=\ttfamily,
+    breaklines=true,columns=fullflexible,keepspaces=true,escapeinside={\%*}{*)}
+       }
+
+%----------------------------------------------------------------------------------------
+%	NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Homework\ \#1} % Assignment title
+\newcommand{\hmwkDueDate}{Wednesday,\ January\ 28,\ 2015} % Due date
+\newcommand{\hmwkClass}{COP\ 5621} % Course/class
+\newcommand{\hmwkClassTime}{6:25pm} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{Smith} % Teacher/lecturer
+\newcommand{\hmwkAuthorName}{Musa V. Ahmed \& Jose Acosta} % Your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\belowcaptionskip=-10pt
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\begin{homeworkProblem}
+    Implemented a simple program analyzer and interpreter for the straight-line programming
+    language. This exercise serves as an introduction to \emph{environments} (symbol tables
+    mapping variable names to information about the variables); to \emph{abstract syntax}
+    (data structures representing the phrase structure of programs); to \emph{recursion over
+    tree data structures}, useful in many parts of a compiler; and to a \emph{functional style}
+    of programming without assignment statements.
+
+    It also serves as a "warm-up" exercise in Java programming. Programmers experienced in
+    other languages but new to Java should be able to do this exercise, but will need
+    supplementary material (such as textbooks) on Java. 
+
+    Programs to be interpreted are already parsed into abstract syntax, as described by the
+    data types in Program 1.5.
+
+    However, we do not wish to worry about parsing the language, so we write this program by
+    applying data constructors:
+
+    \begin{lstlisting}[frame=none]
+    Stm prog = 
+    new CompoundStm(new AssignStm("a",
+                        new OpExp(new NumExp(5)m
+                                    OpExp.Plus, new NumExp(5),
+                                                OpExp.Plus, new NumExp(3)))m
+    new CompoundStm(new AssignStm("b",
+        new EseqExp(new PrintStm(new PairExpList(new IdExp("a"),
+                    new LastExpList(new OpExp(new IdExp("a"),
+                                    OpExp.Minus,new NumExp(1))))),
+                                    
+            new OpExp(new NumExp(10), OpExp.Times,
+                        new IdExp("a")))),
+    new PrintStm(new LastExpList(new IdExp("b"))));
+    \end{lstlisting}
+
+    Files with the data type declarations for the trees, and this sample program, are available
+    in the directory \verb!$MINIJAVA/chap1!.
+
+    Writing interpreters without side effects (that is, assignment statements that update
+    variables and data structures) is a good introduction to \emph{denotational semantics} and
+    \emph{attribute grammars}, which are methods for describing what programming languages do.
+    It's often a useful technique in writing compilers, too; compilers are also in the business
+    of saying what programming languages do.
+
+    Therefore, in implementing these programs, never assign a new value to any variable or
+    object field except when it is initialized. For local variables, use the initializing form
+    of declaration (for example, \verb!int i=j+3;!) and for each class, make a constructor
+    function (like the \verb!CompoundStm! constructor in Program 1.5).
+
+    \begin{enumerate}
+        \item Write a Java function \verb!int maxargs(Stm s)! that tells the maximum number of
+            arguments of any \verb!print! statement within any subexpression of a given
+            statement. For example, \verb!maxargs(prog)! is 2.
+
+        \item Write a Java function \verb!void interp(Stm s)! thats "interprets" a program in
+            this language. To write in a "functional programming" style - in which you never
+            use an assignment statement - initialize each local variable as you declare it.
+    \end{enumerate}
+
+    Your function that examine each \verb!Exp! will have to use \verb!instanceof! to determine
+    which subclass the expression belongs to and then cast to proper subclass. Or you can add
+    methods to the \verb!Exp! and \verb!Stm! classes to avoid the use of \verb!instanceof!.
+
+    For part 1, remember that print statements can contain expressions that contain other print
+    statements.
+
+    For part 2, make two mutually recursive functions \verb!interpStm! and \verb!interpExp!.
+    Represent a "table," mapping identifiers to the integer values assigned to them, as a list
+    of \verb!id! x \verb!int! pairs.
+
+    \begin{lstlisting}[frame=none]
+    class Table {
+        String id; int value; Table tail;
+        Table(String i, int v, Table t) {id=i; value=v; tail=t;}
+    }
+    \end{lstlisting}
+
+    Then \verb!interpStm! is declared as
+
+    \begin{lstlisting}[frame=none]
+    Table interpStm(Stm s, Table t)
+    \end{lstlisting}
+
+\end{homeworkProblem}
+\clearpage
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
