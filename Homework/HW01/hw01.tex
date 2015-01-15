@@ -14,6 +14,8 @@
 \usepackage{caption}
 \usepackage{enumitem}
 \usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{calc,shapes.multipart,chains,arrows}
 
 \DeclareCaptionFont{white}{\color{white}}
 \DeclareCaptionFormat{listing}{%
@@ -62,26 +64,8 @@
 %   COLORS AND LANGUAGAGE
 %----------------------------------------------------------------------------------------
 
-\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
-\definecolor{greencomments}{rgb}{0,0.5,0}
-\definecolor{turqusnumbers}{rgb}{0.17,0.57,0.69}
-\definecolor{redstrings}{rgb}{0.5,0,0}
-
-\lstdefinelanguage{FSharp}
-                {morekeywords={let, new, match, with, rec, open, module, namespace, type, of,
-                member, and, for, in, do, begin, end, fun, function, try, mutable, if, then,
-                else},
-                keywordstyle=\color{bluekeywords},
-                sensitive=false,
-                morecomment=[l][\color{greencomments}]{///},
-                morecomment=[l][\color{greencomments}]{//},
-                morecomment=[s][\color{greencomments}]{{(*}{*)}},
-                morestring=[b]",
-                stringstyle=\color{redstrings}
-                }
-
 \lstset{
-    frame=lrb,xleftmargin=\fboxsep,xrightmargin=-\fboxsep,language=FSharp,basicstyle=\ttfamily,
+    frame=lrb,xleftmargin=\fboxsep,xrightmargin=-\fboxsep,language=Java,basicstyle=\ttfamily,
     breaklines=true,columns=fullflexible,keepspaces=true,escapeinside={\%*}{*)}
        }
 
@@ -112,15 +96,16 @@
     (data structures representing the phrase structure of programs); to \emph{recursion over
     tree data structures}, useful in many parts of a compiler; and to a \emph{functional style}
     of programming without assignment statements.
+    \vspace{5 mm}
 
-    It also serves as a "warm-up" exercise in Java programming. Programmers experienced in
+    \hspace{4 mm}It also serves as a "warm-up" exercise in Java programming. Programmers experienced in
     other languages but new to Java should be able to do this exercise, but will need
     supplementary material (such as textbooks) on Java. 
 
-    Programs to be interpreted are already parsed into abstract syntax, as described by the
+    \hspace{4 mm}Programs to be interpreted are already parsed into abstract syntax, as described by the
     data types in Program 1.5.
 
-    However, we do not wish to worry about parsing the language, so we write this program by
+    \hspace{4 mm}However, we do not wish to worry about parsing the language, so we write this program by
     applying data constructors:
 
     \begin{lstlisting}[frame=none]
@@ -142,13 +127,13 @@
     Files with the data type declarations for the trees, and this sample program, are available
     in the directory \verb!$MINIJAVA/chap1!.
 
-    Writing interpreters without side effects (that is, assignment statements that update
+    \hspace{4 mm}Writing interpreters without side effects (that is, assignment statements that update
     variables and data structures) is a good introduction to \emph{denotational semantics} and
     \emph{attribute grammars}, which are methods for describing what programming languages do.
     It's often a useful technique in writing compilers, too; compilers are also in the business
     of saying what programming languages do.
 
-    Therefore, in implementing these programs, never assign a new value to any variable or
+    \hspace{4 mm}Therefore, in implementing these programs, never assign a new value to any variable or
     object field except when it is initialized. For local variables, use the initializing form
     of declaration (for example, \verb!int i=j+3;!) and for each class, make a constructor
     function (like the \verb!CompoundStm! constructor in Program 1.5).
@@ -163,14 +148,14 @@
             use an assignment statement - initialize each local variable as you declare it.
     \end{enumerate}
 
-    Your function that examine each \verb!Exp! will have to use \verb!instanceof! to determine
+    \hspace{4 mm}Your function that examine each \verb!Exp! will have to use \verb!instanceof! to determine
     which subclass the expression belongs to and then cast to proper subclass. Or you can add
     methods to the \verb!Exp! and \verb!Stm! classes to avoid the use of \verb!instanceof!.
 
-    For part 1, remember that print statements can contain expressions that contain other print
+    \hspace{4 mm}For part 1, remember that print statements can contain expressions that contain other print
     statements.
 
-    For part 2, make two mutually recursive functions \verb!interpStm! and \verb!interpExp!.
+    \hspace{4 mm}For part 2, make two mutually recursive functions \verb!interpStm! and \verb!interpExp!.
     Represent a "table," mapping identifiers to the integer values assigned to them, as a list
     of \verb!id! x \verb!int! pairs.
 
@@ -186,6 +171,29 @@
     \begin{lstlisting}[frame=none]
     Table interpStm(Stm s, Table t)
     \end{lstlisting}
+
+    taking a table $t_1$ as argument and producing the new table $t_2$ that's just like $t_1$
+    except that some identifiers map to different integers as a result of the statement.
+
+    \hspace{4 mm}For example, the table $t_1$ thats maps $a$ to 3 and maps $c$ to 4, which we
+    write $\{a \mapsto 3, c \mapsto 4\}$ in mathematical notations, could be represented as the
+    linked list
+    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=3,
+        draw, rectangle split horizontal}, >=stealth, start chain]
+
+        \node[list, on chain] (A) {
+            \nodepart{one} {a}
+            \nodepart{two} {3}
+            \nodepart{three} {}
+        };
+        \node[list, on chain,draw] (B) {
+            \nodepart{one} {c}
+            \nodepart{two} {4}
+            \nodepart{three} {}
+        };
+        \draw[*->] let \p1 = (A.three), \p2 = (A.center) in (\x1,\y2) -- (B);
+
+    \end{tikzpicture}
 
 \end{homeworkProblem}
 \clearpage
