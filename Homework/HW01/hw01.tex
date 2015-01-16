@@ -235,14 +235,26 @@
     int lookup(Table t, String key)
     \end{lstlisting}
 
-    just searches down the linked list. Of course, in an object-oriented style \verb!int
-    lookup(String key)! should be a method of the \verb!Table! class.
+    just searches down the linked list. Of course, in an object-oriented style \verb!int lookup(String key)! 
+    should be a method of the \verb!Table! class.
 
     \hspace{4 mm}Interpreting expressions is more complicated than interpreting statements,
     because expressions return integer values \emph{and} have side effects. We wish to simulate
     the straight-line programming language's assignment statements without doing any side
     effects in the interpreter itself. (The \verb!print! statements will be accomplished by
     interpreter side effects, however.) The solution is to declare \verb!interpExp! as 
+
+    \begin{lstlisting}[frame=none]
+    class IntAndTable {int i; Table t;
+        IntAndTable(int ii, Table tt) {i=ii; t=tt}
+    }
+    IntAndTable interpExp(Exp e, Table t) ...
+    \end{lstlisting}
+
+    \hspace{4 mm}The result of interpreting an expression $e_1$ with table $t_1$ is an integer
+    value $i$ and a new table $t_2$. When interpreting an expression with two subexpressions
+    (such as an \verb!OpExp!), the table $t_2$ resulting from the first subexpression can be
+    used in processing the second subexpression.
 
 \end{homeworkProblem}
 \clearpage
