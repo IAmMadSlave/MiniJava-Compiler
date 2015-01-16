@@ -186,16 +186,63 @@
             \nodepart{two} {3}
             \nodepart{three} {}
         };
-        \node[list, on chain,draw] (B) {
+        \node[list, on chain] (B) {
             \nodepart{one} {c}
             \nodepart{two} {4}
             \nodepart{three} {}
         };
-        \draw[*->] let \p1 = (A.three), \p2 = (A.center) in (\x1,\y2) -- (B);
+        \draw[->] let \p1 = (A.three), \p2 = (A.center) in (\x1,\y2) -- (B);
 
     \end{tikzpicture}.
 
-    \hspace{4 mm}
+    \hspace{4 mm}Now, let the table $t_2$ be just like $t_1$, except that is maps $c$ to 7
+    instead of 4. Mathematically, we could write,
+
+    \hspace{4 mm}$t_2$ = update($t_1$, $c$, 7),
+
+    where the update function returns a new table $\{a \mapsto 3, c \mapsto 7\}$.
+
+    \hspace{4 mm}On the computer, we could implement $t_2$ by putting a new cell at the headof
+    the linked list: 
+
+    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=3,
+        draw, rectangle split horizontal}, >=stealth, start chain]
+
+        \node[list, on chain] (A) {
+            \nodepart{one} {c}
+            \nodepart{two} {7}
+            \nodepart{three} {}
+        };
+        \node[list, on chain] (B) {
+            \nodepart{one} {a}
+            \nodepart{two} {3}
+            \nodepart{three} {}
+        };
+        \node[list, on chain] (C) {
+            \nodepart{one} {c}
+            \nodepart{two} {4}
+            \nodepart{three} {}
+        };
+        \draw[->] let \p1 = (A.three), \p2 = (A.center) in (\x1,\y2) -- (B);
+        \draw[->] let \p1 = (B.three), \p2 = (B.center) in (\x1,\y2) -- (C);
+    \end{tikzpicture}, as long as we assume that the \emph{first} occurrence of $c$ in the lsit
+    takes precedence over any later occurrence.
+
+    \hspace{4 mm}Therefore, the \verb!update! function is easy to implement; and the
+    corresponding \verb!lookup! function
+
+    \begin{lstlisting}[frame=none]
+    int lookup(Table t, String key)
+    \end{lstlisting}
+
+    just searches down the linked list. Of course, in an object-oriented style \verb!int
+    lookup(String key)! should be a method of the \verb!Table! class.
+
+    \hspace{4 mm}Interpreting expressions is more complicated than interpreting statements,
+    because expressions return integer values \emph{and} have side effects. We wish to simulate
+    the straight-line programming language's assignment statements without doing any side
+    effects in the interpreter itself. (The \verb!print! statements will be accomplished by
+    interpreter side effects, however.) The solution is to declare \verb!interpExp! as 
 
 \end{homeworkProblem}
 \clearpage
