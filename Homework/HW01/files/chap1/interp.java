@@ -3,6 +3,27 @@
 class interp {
   
   static int maxargs(Stm s) {
+    // CompoundStm
+    if(s instanceof CompoundStm) {
+        CompoundStm compoundStm = (CompoundStm) s;
+        // Math.max(maxargs(compoundStm.stm1), maxargs(compoundStm.stm2));
+    }
+    // AssignStm
+    else if(s instanceof AssignStm) {
+        AssignStm assignStm = (AssignStm) s;
+
+        if(assignStm.exp instanceof OpExp) {
+        
+        }
+        else if(assignStm.exp instanceof EseqExp) {
+
+        }
+    }
+    // PrintStm
+    else if(s instanceof PrintStm) {
+        PrintStm printStm = (PrintStm) s;
+    }
+
     return 0;	 	// replace this with the actual code needed
   }
 
@@ -41,7 +62,17 @@ class interp {
       CompoundStm cs = (CompoundStm) s;
       return interpStm(cs.stm2, interpStm(cs.stm1, t));
     }
-    // ...
+    else if(s instanceof AssignStm) {
+      AssignStm as = (AssignStm) s;
+      
+      IntTable iT = interpExp(as.exp, t);
+
+      return update(iT.t, as.id, iT.i);
+    }
+    else if(s instanceof PrintStm) {
+      PrintStm ps = (PrintStm) s;
+      return interpAndPrint(ps.expList, t);
+    }
     else
       throw new Error("Bad Statement");
   }
@@ -51,6 +82,35 @@ class interp {
   }
 
   static IntAndTable interpExp(Exp e, Table t) {
+    if(e instanceof IdExp) {
+        //
+    }
+    else if(e instanceof NumExp) {
+        //
+    }
+    else if(e instanceof OpExp) {
+      OpExp op = (OpExp) e;
+
+      switch(op.oper) {
+          case 1:
+            
+              break;
+          case 2:
+
+              break;
+          case 3:
+
+              break;
+          case 4:
+
+              break;
+          default: 
+
+      }
+    }
+    else if(e instanceof EseqExp) {
+        
+    }
     return null;	// replace this with the actual code needed
   }
 
