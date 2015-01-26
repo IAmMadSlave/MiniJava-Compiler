@@ -60,17 +60,19 @@ class interp {
   static Table interpStm(Stm s, Table t) {
     if (s instanceof CompoundStm) {
       CompoundStm cs = (CompoundStm) s;
+
       return interpStm(cs.stm2, interpStm(cs.stm1, t));
     }
     else if(s instanceof AssignStm) {
       AssignStm as = (AssignStm) s;
       
-      IntTable iT = interpExp(as.exp, t);
+      IntAndTable iT = interpExp(as.exp, t);
 
       return update(iT.t, as.id, iT.i);
     }
     else if(s instanceof PrintStm) {
       PrintStm ps = (PrintStm) s;
+
       return interpAndPrint(ps.expList, t);
     }
     else
@@ -83,35 +85,42 @@ class interp {
 
   static IntAndTable interpExp(Exp e, Table t) {
     if(e instanceof IdExp) {
-        //
+      IdExp ie = (IdExp) e;
+
+      return new IntAndTable(lookup(t, id), t);        
     }
     else if(e instanceof NumExp) {
-        //
+      NumExp ne = (NumExp) e;
+
+      return new IntAndTable(ne.num, t);
     }
     else if(e instanceof OpExp) {
       OpExp op = (OpExp) e;
 
       switch(op.oper) {
           case 1:
-            
+            return new IntAndTable(interpExp(op.left).i + interpExp(op.right).i, t); 
               break;
           case 2:
-
+            return new IntAndTable(interpExp(op.left).i - interpExp(op.right).i, t); 
               break;
           case 3:
-
+            return new IntAndTable(interpExp(op.left).i * interpExp(op.right).i, t); 
               break;
           case 4:
-
+            return new IntAndTable(interpExp(op.left).i / interpExp(op.right).i, t); 
               break;
-          default: 
-
+          default:
+            throw new Error("Bad Operator");
       }
     }
     else if(e instanceof EseqExp) {
-        
+      EseqExp ee = (EseqExp) e;
+      
+      return interpExp(ee.exp, interpStm(ee.stm, t));
     }
-    return null;	// replace this with the actual code needed
+    else
+      throw new Error("Bad Expression");
   }
 
   public static void main(String args[]) {
