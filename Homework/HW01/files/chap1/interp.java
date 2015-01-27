@@ -3,7 +3,66 @@
 class interp {
   
   static int maxargs(Stm s) {
-    return 0;	 	// replace this with the actual code needed
+    if(s instanceof CompoundStm) {
+      CompoundStm cs = (CompoundStm) s;
+
+      return Math.max(maxargs(cd.stm1), maxargs(cs.stm2));
+    }
+    else if(s instanceof AssignStm) {
+      AssignStm as = (AssignStm) s;
+
+      return maxargs(as.exp);
+    }
+    else if(s instanceof PrintStm) {
+      PrintStm ps = (PrintStm) s;
+
+      if(ps.exps instanceof PairExpList) {
+        PairExpList pel = (PairExpList) ps.exps;
+
+        PrintStm ps1 = new PrintStm(pel.tail);
+
+        return Math.max(Math.max(1 + maxargs(pel.tail), maxargs(pel.head)), maxargs(ps1));
+      }
+      else if(ps.exps instanceof LastExpList) {
+        LastExpList lel = (LastExpList) ps.exps;
+            
+        return Math.max(1, maxargs(lel.head));
+      }
+    }
+
+    return -999999999;
+  }
+
+  static int maxargs(Exp e) {
+    if(e instanceof IdExp) {
+      return 0;
+    }
+    else if(e instanceof NumExp) {
+      return 0;
+    }
+    else if(e instanceof OpExp) {
+      OpExp oe = (OpExp) e;
+
+      return Math.max(maxargs(oe.left), maxargs(oe.right));
+    }
+    else if(e instanceof EseqExp) {
+      EseqExp ee = (EseqExp) e;
+
+      return Math.max(maxargs(ee.exp), maxargs(ee.stm));
+    }
+
+    return -999999999;
+  }
+
+  static int maxargs(ExpList l) {
+    if(l instanceof PairExpList) {
+      return 1 + maxargs(((PairExpList)l).tail);
+    }
+    else if(l instanceof LastExpList) {
+      return 1;
+    }
+
+    return -999999999;
   }
 
   static void interp(Stm s) {
