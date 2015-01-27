@@ -6,7 +6,7 @@ class interp {
     if(s instanceof CompoundStm) {
       CompoundStm cs = (CompoundStm) s;
 
-      return Math.max(maxargs(cd.stm1), maxargs(cs.stm2));
+      return Math.max(maxargs(cs.stm1), maxargs(cs.stm2));
     }
     else if(s instanceof AssignStm) {
       AssignStm as = (AssignStm) s;
@@ -187,7 +187,7 @@ class interp {
   }
 
   public static void main(String args[]) {
-    //System.out.println("maxargs result: " + maxargs(prog.prog));
+    System.out.println("maxargs result: " + maxargs(prog.prog));
     System.out.print("interpretation result: ");
     interp(prog.prog);
   }
