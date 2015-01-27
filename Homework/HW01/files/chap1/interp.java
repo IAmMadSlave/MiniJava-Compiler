@@ -3,27 +3,6 @@
 class interp {
   
   static int maxargs(Stm s) {
-    // CompoundStm
-    if(s instanceof CompoundStm) {
-        CompoundStm compoundStm = (CompoundStm) s;
-        // Math.max(maxargs(compoundStm.stm1), maxargs(compoundStm.stm2));
-    }
-    // AssignStm
-    else if(s instanceof AssignStm) {
-        AssignStm assignStm = (AssignStm) s;
-
-        if(assignStm.exp instanceof OpExp) {
-        
-        }
-        else if(assignStm.exp instanceof EseqExp) {
-
-        }
-    }
-    // PrintStm
-    else if(s instanceof PrintStm) {
-        PrintStm printStm = (PrintStm) s;
-    }
-
     return 0;	 	// replace this with the actual code needed
   }
 
@@ -73,21 +52,41 @@ class interp {
     else if(s instanceof PrintStm) {
       PrintStm ps = (PrintStm) s;
 
-      return interpAndPrint(ps.expList, t);
+      return interpAndPrint(ps.exps, t);
     }
     else
       throw new Error("Bad Statement");
   }
 
   static Table interpAndPrint(ExpList exps, Table t) {
-    return null;	// replace this with the actual code needed
+    if (exps instanceof PairExpList) {
+      PairExpList pel = (PairExpList) exps;
+
+      IntAndTable iT = interpExp(pel.head,t); 
+      
+      System.out.print(iT.i + " ");
+
+      return interpAndPrint(pel.tail, iT.t);
+    }
+    else if (exps instanceof LastExpList) {
+      LastExpList lel = (LastExpList) exps;
+
+      IntAndTable iT = interpExp(lel.head, t);
+
+      System.out.println(iT.i);
+
+      return iT.t;
+    }
+    else {
+      throw new Error("Bad Print");
+    }
   }
 
   static IntAndTable interpExp(Exp e, Table t) {
     if(e instanceof IdExp) {
       IdExp ie = (IdExp) e;
 
-      return new IntAndTable(lookup(t, id), t);        
+      return new IntAndTable(lookup(t, ie.id), t);        
     }
     else if(e instanceof NumExp) {
       NumExp ne = (NumExp) e;
@@ -97,19 +96,24 @@ class interp {
     else if(e instanceof OpExp) {
       OpExp op = (OpExp) e;
 
+      IntAndTable leftResultTable = interpExp(op.left, t);
+
+      IntAndTable rightResultTable = interpExp(op.right, leftResultTable.t);
+
       switch(op.oper) {
+
           case 1:
-            return new IntAndTable(interpExp(op.left).i + interpExp(op.right).i, t); 
-              break;
+            return new IntAndTable(leftResultTable.i + rightResultTable.i, rightResultTable.t);
+
           case 2:
-            return new IntAndTable(interpExp(op.left).i - interpExp(op.right).i, t); 
-              break;
+            return new IntAndTable(leftResultTable.i - rightResultTable.i, rightResultTable.t);
+
           case 3:
-            return new IntAndTable(interpExp(op.left).i * interpExp(op.right).i, t); 
-              break;
+            return new IntAndTable(leftResultTable.i * rightResultTable.i, rightResultTable.t);
+
           case 4:
-            return new IntAndTable(interpExp(op.left).i / interpExp(op.right).i, t); 
-              break;
+            return new IntAndTable(leftResultTable.i / rightResultTable.i, rightResultTable.t);
+
           default:
             throw new Error("Bad Operator");
       }
@@ -124,7 +128,7 @@ class interp {
   }
 
   public static void main(String args[]) {
-    System.out.println("maxargs result: " + maxargs(prog.prog));
+    //System.out.println("maxargs result: " + maxargs(prog.prog));
     System.out.print("interpretation result: ");
     interp(prog.prog);
   }
