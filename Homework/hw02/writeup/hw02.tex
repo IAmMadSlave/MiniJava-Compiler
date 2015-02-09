@@ -73,8 +73,8 @@
 %	NAME AND CLASS SECTION
 %----------------------------------------------------------------------------------------
 
-\newcommand{\hmwkTitle}{Homework\ \#1} % Assignment title
-\newcommand{\hmwkDueDate}{Wednesday,\ January\ 28,\ 2015} % Due date
+\newcommand{\hmwkTitle}{Homework\ \#2} % Assignment title
+\newcommand{\hmwkDueDate}{Wednesday,\ Feburary\ 11,\ 2015} % Due date
 \newcommand{\hmwkClass}{COP\ 5621} % Course/class
 \newcommand{\hmwkClassTime}{6:25pm} % Class/lecture time
 \newcommand{\hmwkClassInstructor}{Smith} % Teacher/lecturer
@@ -90,187 +90,86 @@
 %----------------------------------------------------------------------------------------
 
 \begin{homeworkProblem}
-    Implemented a simple program analyzer and interpreter for the straight-line programming
-    language. This exercise serves as an introduction to \emph{environments} (symbol tables
-    mapping variable names to information about the variables); to \emph{abstract syntax}
-    (data structures representing the phrase structure of programs); to \emph{recursion over
-    tree data structures}, useful in many parts of a compiler; and to a \emph{functional style}
-    of programming without assignment statements.
-    \vspace{5 mm}
+    In this assignment, we begin the compiler project by implementing a lexical analyzer for
+    MiniJava. To find out details of MiniJava's tokens, you will need to refer to the Appendix
+    on pages 484-486.
 
-    \hspace{4 mm}It also serves as a "warm-up" exercise in Java programming. Programmers experienced in
-    other languages but new to Java should be able to do this exercise, but will need
-    supplementary material (such as textbooks) on Java. 
+    \vspace{2 mm}
+    We will not be using the tools JavaCC or SableCC which are discussed (briefly!) in Chapter
+    2. Instead we will be using tools called JLex and CIP; these are Java versions of the
+    classic Unix tools, lex and yacc. You can find the JLex Manual at the course Moodel page.
 
-    \hspace{4 mm}Programs to be interpreted are already parsed into abstract syntax, as described by the
-    data types in Program 1.5.
-
-    \hspace{4 mm}However, we do not wish to worry about parsing the language, so we write this program by
-    applying data constructors:
+    \vspace{2 mm}
+    As mentioned in the syllabus, you need to set some UNIX environment variables to access
+    JLex. Add the following lines to your \verb!.cshr! files:
 
     \begin{lstlisting}[frame=none]
-    Stm prog = 
-    new CompoundStm(new AssignStm("a",
-                        new OpExp(new NumExp(5)m
-                                    OpExp.Plus, new NumExp(5),
-                                                OpExp.Plus, new NumExp(3)))m
-    new CompoundStm(new AssignStm("b",
-        new EseqExp(new PrintStm(new PairExpList(new IdExp("a"),
-                    new LastExpList(new OpExp(new IdExp("a"),
-                                    OpExp.Minus,new NumExp(1))))),
-                                    
-            new OpExp(new NumExp(10), OpExp.Times,
-                        new IdExp("a")))),
-    new PrintStm(new LastExpList(new IdExp("b"))));
+    setenv JAVA_HOME /depot/JSE-1.8
+    setenv CLASSPATH "/homes/smithg/compiler:."
     \end{lstlisting}
 
-    Files with the data type declarations for the trees, and this sample program, are available
-    in the directory \verb!$MINIJAVA/chap1!.
 
-    \hspace{4 mm}Writing interpreters without side effects (that is, assignment statements that update
-    variables and data structures) is a good introduction to \emph{denotational semantics} and
-    \emph{attribute grammars}, which are methods for describing what programming languages do.
-    It's often a useful technique in writing compilers, too; compilers are also in the business
-    of saying what programming languages do.
-
-    \hspace{4 mm}Therefore, in implementing these programs, never assign a new value to any variable or
-    object field except when it is initialized. For local variables, use the initializing form
-    of declaration (for example, \verb!int i=j+3;!) and for each class, make a constructor
-    function (like the \verb!CompoundStm! constructor in Program 1.5).
-
-    \begin{enumerate}
-        \item Write a Java function \verb!int maxargs(Stm s)! that tells the maximum number of
-            arguments of any \verb!print! statement within any subexpression of a given
-            statement. For example, \verb!maxargs(prog)! is 2.
-
-        \item Write a Java function \verb!void interp(Stm s)! thats "interprets" a program in
-            this language. To write in a "functional programming" style - in which you never
-            use an assignment statement - initialize each local variable as you declare it.
-    \end{enumerate}
-
-    \hspace{4 mm}Your function that examine each \verb!Exp! will have to use \verb!instanceof! to determine
-    which subclass the expression belongs to and then cast to proper subclass. Or you can add
-    methods to the \verb!Exp! and \verb!Stm! classes to avoid the use of \verb!instanceof!.
-
-    \hspace{4 mm}For part 1, remember that print statements can contain expressions that contain other print
-    statements.
-
-    \hspace{4 mm}For part 2, make two mutually recursive functions \verb!interpStm! and \verb!interpExp!.
-    Represent a "table," mapping identifiers to the integer values assigned to them, as a list
-    of \verb!id! x \verb!int! pairs.
+    \vspace{-3 mm}
+    My \verb!/homes/smithg/compiler/minijava/chap2! directory contains a number of files to
+    help you; you can copy them to your directory with the command
 
     \begin{lstlisting}[frame=none]
-    class Table {
-        String id; int value; Table tail;
-        Table(String i, int v, Table t) {id=i; value=v; tail=t;}
-    }
+    cp -rp /homes/smithg/compiler/minijava/chap2 .
     \end{lstlisting}
 
-    Then \verb!interpStm! is declared as
+    \vspace{-3 mm}
+    The only file you need to modify is \verb!parse/MiniJava.lex!, which contains the JLex
+    specification. Once you have completed \verb!MiniJava.lex!, you can run JLex and compile
+    everything simply by typing 
 
     \begin{lstlisting}[frame=none]
-    Table interpStm(Stm s, Table t)
+    make
     \end{lstlisting}
 
-    taking a table $t_1$ as argument and producing the new table $t_2$ that's just like $t_1$
-    except that some identifiers map to different integers as a result of the statement.
-
-    \hspace{4 mm}For example, the table $t_1$ thats maps $a$ to 3 and maps $c$ to 4, which we
-    write $\{a \mapsto 3, c \mapsto 4\}$ in mathematical notations, could be represented as the
-    linked list
-    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=3,
-        draw, rectangle split horizontal}, >=stealth, start chain]
-
-        \node[list, on chain] (A) {
-            \nodepart{one} {a}
-            \nodepart{two} {3}
-            \nodepart{three} {}
-        };
-        \node[list, on chain] (B) {
-            \nodepart{one} {c}
-            \nodepart{two} {4}
-            \nodepart{three} {}
-        };
-        \draw[->] let \p1 = (A.three), \p2 = (A.center) in (\x1,\y2) -- (B);
-
-    \end{tikzpicture}.
-
-    \hspace{4 mm}Now, let the table $t_2$ be just like $t_1$, except that is maps $c$ to 7
-    instead of 4. Mathematically, we could write,
-
-    \hspace{4 mm}$t_2$ = update($t_1$, $c$, 7),
-
-    where the update function returns a new table $\{a \mapsto 3, c \mapsto 7\}$.
-
-    \hspace{4 mm}On the computer, we could implement $t_2$ by putting a new cell at the headof
-    the linked list: 
-
-    \begin{tikzpicture}[list/.style={rectangle split, rectangle split parts=3,
-        draw, rectangle split horizontal}, >=stealth, start chain]
-
-        \node[list, on chain] (A) {
-            \nodepart{one} {c}
-            \nodepart{two} {7}
-            \nodepart{three} {}
-        };
-        \node[list, on chain] (B) {
-            \nodepart{one} {a}
-            \nodepart{two} {3}
-            \nodepart{three} {}
-        };
-        \node[list, on chain] (C) {
-            \nodepart{one} {c}
-            \nodepart{two} {4}
-            \nodepart{three} {}
-        };
-        \draw[->] let \p1 = (A.three), \p2 = (A.center) in (\x1,\y2) -- (B);
-        \draw[->] let \p1 = (B.three), \p2 = (B.center) in (\x1,\y2) -- (C);
-    \end{tikzpicture}, as long as we assume that the \emph{first} occurrence of $c$ in the lsit
-    takes precedence over any later occurrence.
-
-    \hspace{4 mm}Therefore, the \verb!update! function is easy to implement; and the
-    corresponding \verb!lookup! function
+    \vspace{-3 mm}
+    from \verb!chap2!; and then you can run your lexer by typing
 
     \begin{lstlisting}[frame=none]
-    int lookup(Table t, String key)
+    java parse.Main test.java
     \end{lstlisting}
 
-    just searches down the linked list. Of course, in an object-oriented style \verb!int lookup(String key)! 
-    should be a method of the \verb!Table! class.
+    \vspace{-3 mm}
+    Please upload your \verb!MiniJava.lex! file to the Moodle web site, and also please prepare
+    a hard copy to submit in class. As always, it would be nice to include printouts of some
+    sample executions.
 
-    \hspace{4 mm}Interpreting expressions is more complicated than interpreting statements,
-    because expressions return integer values \emph{and} have side effects. We wish to simulate
-    the straight-line programming language's assignment statements without doing any side
-    effects in the interpreter itself. (The \verb!print! statements will be accomplished by
-    interpreter side effects, however.) The solution is to declare \verb!interpExp! as 
+    Here are a few more tips:
+    
+    \begin{itemize}[noitemsep]
+        \item You should treat everything written in \textbf{boldface} in the grammar on page
+            485 as a reserved word. You may also wish to look at \verb!parse/sym.java!, which
+            defines constants for all of the token that you must return. (It also defines a
+            constant for \verb!error!, but this is not a real token; it is used by CUP for
+            error recovery.) Note also that you should not recognize \textbf{extends}, which is
+            supported only when MiniJava is augmented with inheritance in Chapter 14.
+        \item Contrary to what is said on page 484, Java /* */ comments may \emph{not} be
+            nested.
+        \item To interface with CUP, your lexer must return token with class
+            \verb!java_cup/runtime\Symbol!. You can create such objects by calling the class
+            constructor or by using the handy method \verb!tok! defined in \verb!MiniJava.lex!.
+            Notice that a \verb!Symbol! has a \verb!value! field of class \verb!Object!, which
+            holds the semantic value of the token. For most MiniJava tokens, \verb!value! should be
+            null, but for an \verb!ID! it should be a \verb!String!, and for an
+            \verb!INTEGER_LITERAL! it should be an \verb!Integer!.
+        \item For printing nice error messages, the class \verb!errormsg/ErrorMsg! provides an
+            \verb!error! method that takes two parameters: an \verb!int pos!, which tells where
+            in the source file the error occured, and a \verb!String msg!. To get error
+            positions, using the JLex variable \verb!yychar!, which gives the position of the
+            last token matched.
+        \item You should use JLex \emph{lexical states} to deal with /* */ comments.
+        \item To test your lexer, you can try out the file \verb!test.java! and compare your
+            output with mine in \verb!test.out!.
+        \item We won't be using CUP until Chapter 3, but some of the code included in the
+            \verb!chap2/! skeleton files deals with the interface between JLex and CUP. If you
+            are curious about this, you can look at the CUP Manual on the course Moodle page.
+        \item This assignment is worth 10 points.
+    \end{itemize}
 
-    \begin{lstlisting}[frame=none]
-    class IntAndTable {int i; Table t;
-        IntAndTable(int ii, Table tt) {i=ii; t=tt}
-    }
-    IntAndTable interpExp(Exp e, Table t) ...
-    \end{lstlisting}
-
-    \hspace{4 mm}The result of interpreting an expression $e_1$ with table $t_1$ is an integer
-    value $i$ and a new table $t_2$. When interpreting an expression with two subexpressions
-    (such as an \verb!OpExp!), the table $t_2$ resulting from the first subexpression can be
-    used in processing the second subexpression.
-
-    \clearpage    
-    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={interp.java}]{../src/interp.java}
-
-    \clearpage
-    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={Output
-    for prog.java}]{../src/prog.txt}
-
-    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={Output
-    for prog1.java}]{../src/prog1.txt}
-
-    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={Output
-    for prog2.java}]{../src/prog2.txt}
-
-    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={Output
-    for prog3.java}]{../src/prog3.txt}
 
 \end{homeworkProblem}
 \clearpage
