@@ -74,7 +74,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 <COMMENT>   ([^*]|\*+[^*/])*\**\*/   {yybegin(YYINITIAL);}
 
-<YYINITIAL> "//"[^\n]*\n             { }
+<YYINITIAL> "//"[^\n]*               { }
 
 <YYINITIAL> [\ \t\n]+		         { }
 
