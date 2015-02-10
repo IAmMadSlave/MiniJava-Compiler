@@ -1,0 +1,27 @@
+INT (44,47) null
+ID (48,51) foo
+SEMICOLON (51,52) null
+PRINTLN (53,71) null
+LPAREN (71,72) null
+RPAREN (72,73) null
+SEMICOLON (73,74) null
+IF (75,77) null
+LPAREN (78,79) null
+EXCLAMATION (79,80) null
+ID (80,83) cat
+AND (84,86) null
+NEW (87,90) null
+LT (91,92) null
+INTEGER_LITERAL (93,95) 17
+RPAREN (95,96) null
+LBRACE (97,98) null
+test2.java:6.3: unmatched input: $
+  $ - this 
+  ^
+MINUS (118,119) null
+THIS (120,124) null
+RBRACE (125,126) null
+test2.java:8.3: unclosed comment...
+/* Finally we have an unclosed comment... 
+  ^
+EOF (176,176) null
