@@ -70,9 +70,10 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 <YYINITIAL> "public"              {return tok(sym.PUBLIC, null);}
 <YYINITIAL> "class"		          {return tok(sym.CLASS, null);}
 
-<YYINITIAL> "/*"[^*/]*"*/"        { }
-<YYINITIAL> "/*"[^*/]*            {errorMsg.error(yychar,
-                                "unclosed comment...");}
+<YYINITIAL> "/*"                  {yybegin(COMMENT);}
+
+<COMMENT>   ([^*]|\*+[^*/])*\**\*/ {yybegin(YYINITIAL);}
+
 <YYINITIAL> "//"[^\n]*\n          { }
 
 <YYINITIAL> [\ \t\n]+		      { }
@@ -81,6 +82,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 <YYINITIAL> [0-9]+                {return tok(sym.INTEGER_LITERAL, yytext());} 
 
+<COMMENT> ([^*]|\*+[^*/])*\**[^*/] {errorMsg.error(yychar, "unclosed comment...");}
 <YYINITIAL> .			          {errorMsg.error(yychar,
 					            "unmatched input: " + yytext());}
 
