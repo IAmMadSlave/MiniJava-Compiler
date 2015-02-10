@@ -2,6 +2,8 @@
 
 package parse;
 
+
+
 %% 
 
 %implements java_cup.runtime.Scanner
@@ -12,6 +14,9 @@ package parse;
 %state COMMENT
 
 %{
+
+boolean commentState = false;
+
 private errormsg.ErrorMsg errorMsg;
 
 private java_cup.runtime.Symbol tok(int kind, Object value) {
@@ -27,7 +32,10 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 %eofval{
 {
-  return tok(sym.EOF, null);
+	if(commentState)
+		errorMsg.error(yychar, "unclosed comment...");
+	else
+		return tok(sym.EOF, null);
 }
 %eofval}       
 
@@ -70,9 +78,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 <YYINITIAL> "public"                 {return tok(sym.PUBLIC, null);}
 <YYINITIAL> "class"		             {return tok(sym.CLASS, null);}
 
-<YYINITIAL> "/*"                     {yybegin(COMMENT);}
-
-<COMMENT>   ([^*]|\*+[^*/])*\**\*/   {yybegin(YYINITIAL);}
+<YYINITIAL> "/*"                     {commentState = true;yybegin(COMMENT);}
 
 <YYINITIAL> "//"[^\n]*               { }
 
@@ -82,8 +88,15 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 <YYINITIAL> [0-9]+                   {return tok(sym.INTEGER_LITERAL, yytext());} 
 
-<COMMENT>   ([^*]|\*+[^*/])*\**[^*/] {errorMsg.error(yychar, 
-                                    "unclosed comment...");}
+<COMMENT>   "*/"   					{commentState = false;yybegin(YYINITIAL);}
+
+<COMMENT>	[\n]					{}
+
+<COMMENT>   .					    {}
+
 <YYINITIAL> .			             {errorMsg.error(yychar,
 					                "unmatched input: " + yytext());}
+
+
+
 
