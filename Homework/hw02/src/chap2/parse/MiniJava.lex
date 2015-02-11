@@ -15,7 +15,8 @@ package parse;
 
 %{
 
-boolean commentState = false;
+private boolean commentState = false;
+private int commentStart = -1;
 
 private errormsg.ErrorMsg errorMsg;
 
@@ -33,7 +34,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 %eofval{
 {
 	if(commentState)
-		errorMsg.error(yychar, "unclosed comment...");
+		errorMsg.error(commentStart, "unclosed comment..."+yytext());
 	return tok(sym.EOF, null);
 }
 %eofval}       
@@ -77,7 +78,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 <YYINITIAL> "public"                 {return tok(sym.PUBLIC, null);}
 <YYINITIAL> "class"		             {return tok(sym.CLASS, null);}
 
-<YYINITIAL> "/*"                     {commentState = true;yybegin(COMMENT);}
+<YYINITIAL> "/*"                     {commentState = true;commentStart = yychar;yybegin(COMMENT);}
 
 <YYINITIAL> "//"[^\n]*               { }
 
@@ -87,7 +88,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 <YYINITIAL> [0-9]+                   {return tok(sym.INTEGER_LITERAL, java.lang.Integer.parseInt(yytext()));} 
 
-<COMMENT>   "*/"   					{commentState = false;yybegin(YYINITIAL);}
+<COMMENT>   "*/"   					{commentState = false;commentStart=-1;yybegin(YYINITIAL);}
 
 <COMMENT>	[\n]+					{}
 
