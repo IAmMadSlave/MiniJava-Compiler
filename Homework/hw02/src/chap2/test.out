@@ -21,7 +21,7 @@ test.java:6.3: unmatched input: $
 MINUS (116,117) null
 THIS (118,122) null
 RBRACE (123,124) null
-test.java:8.3: unclosed comment...
+test.java:8.1: unclosed comment...
 /* Finally we have an unclosed comment... 
-  ^
+^
 EOF (174,174) null

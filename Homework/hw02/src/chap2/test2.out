@@ -20,8 +20,12 @@ test2.java:6.3: unmatched input: $
   ^
 MINUS (118,119) null
 THIS (120,124) null
-RBRACE (125,126) null
-test2.java:8.3: unclosed comment...
+TIMES (179,180) null
+test2.java:12.8: unmatched input: /
+      */ 
+       ^
+RBRACE (182,183) null
+test2.java:14.1: unclosed comment...
 /* Finally we have an unclosed comment... 
-  ^
-EOF (176,176) null
+^
+EOF (233,233) null

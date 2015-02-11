@@ -2,6 +2,8 @@
 
 package parse;
 
+
+
 %% 
 
 %implements java_cup.runtime.Scanner
@@ -12,6 +14,10 @@ package parse;
 %state COMMENT
 
 %{
+
+private boolean commentState = false;
+private int commentStart = -1;
+
 private errormsg.ErrorMsg errorMsg;
 
 private java_cup.runtime.Symbol tok(int kind, Object value) {
@@ -27,7 +33,9 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 %eofval{
 {
-  return tok(sym.EOF, null);
+	if(commentState)
+		errorMsg.error(commentStart, "unclosed comment..."+yytext());
+	return tok(sym.EOF, null);
 }
 %eofval}       
 
@@ -70,9 +78,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 <YYINITIAL> "public"                 {return tok(sym.PUBLIC, null);}
 <YYINITIAL> "class"		             {return tok(sym.CLASS, null);}
 
-<YYINITIAL> "/*"                     {yybegin(COMMENT);}
-
-<COMMENT>   ([^*]|\*+[^*/])*\**\*/   {yybegin(YYINITIAL);}
+<YYINITIAL> "/*"                     {commentState = true;commentStart = yychar;yybegin(COMMENT);}
 
 <YYINITIAL> "//"[^\n]*               { }
 
@@ -80,10 +86,17 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 <YYINITIAL> [a-zA-Z][a-zA-Z0-9_]*    {return tok(sym.ID, yytext());}
 
-<YYINITIAL> [0-9]+                   {return tok(sym.INTEGER_LITERAL, yytext());} 
+<YYINITIAL> [0-9]+                   {return tok(sym.INTEGER_LITERAL, java.lang.Integer.parseInt(yytext()));} 
 
-<COMMENT>   ([^*]|\*+[^*/])*\**[^*/] {errorMsg.error(yychar, 
-                                    "unclosed comment...");}
+<COMMENT>   "*/"   					{commentState = false;commentStart=-1;yybegin(YYINITIAL);}
+
+<COMMENT>	[\n]+					{}
+
+<COMMENT>   .					    {}
+
 <YYINITIAL> .			             {errorMsg.error(yychar,
 					                "unmatched input: " + yytext());}
+
+
+
 
