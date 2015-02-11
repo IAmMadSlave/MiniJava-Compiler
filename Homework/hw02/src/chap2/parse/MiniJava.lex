@@ -85,7 +85,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 <YYINITIAL> [a-zA-Z][a-zA-Z0-9_]*    {return tok(sym.ID, yytext());}
 
-<YYINITIAL> [0-9]+                   {return tok(sym.INTEGER_LITERAL, yytext());} 
+<YYINITIAL> [0-9]+                   {return tok(sym.INTEGER_LITERAL, java.lang.Integer.parseInt(yytext()));} 
 
 <COMMENT>   "*/"   					{commentState = false;yybegin(YYINITIAL);}
 
