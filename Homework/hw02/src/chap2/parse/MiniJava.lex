@@ -34,8 +34,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 {
 	if(commentState)
 		errorMsg.error(yychar, "unclosed comment...");
-	else
-		return tok(sym.EOF, null);
+	return tok(sym.EOF, null);
 }
 %eofval}       
 
@@ -90,7 +89,7 @@ Yylex(java.io.InputStream s, errormsg.ErrorMsg e) {
 
 <COMMENT>   "*/"   					{commentState = false;yybegin(YYINITIAL);}
 
-<COMMENT>	[\n]					{}
+<COMMENT>	[\n]+					{}
 
 <COMMENT>   .					    {}
 
