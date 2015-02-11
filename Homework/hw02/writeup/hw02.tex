@@ -150,7 +150,7 @@
         \item Contrary to what is said on page 484, Java /* */ comments may \emph{not} be
             nested.
         \item To interface with CUP, your lexer must return token with class
-            \verb!java_cup/runtime\Symbol!. You can create such objects by calling the class
+            \verb!java_cup/runtime/Symbol!. You can create such objects by calling the class
             constructor or by using the handy method \verb!tok! defined in \verb!MiniJava.lex!.
             Notice that a \verb!Symbol! has a \verb!value! field of class \verb!Object!, which
             holds the semantic value of the token. For most MiniJava tokens, \verb!value! should be
