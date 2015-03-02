@@ -19,6 +19,7 @@ parser code {:
   }
 :};
 
+/*terminals */
 terminal ID, INTEGER_LITERAL;
 terminal CLASS, PUBLIC, STATIC, VOID, MAIN, STRING, RETURN,
 	INT, BOOLEAN, IF, ELSE, WHILE, PRINTLN, LENGTH,
@@ -27,12 +28,78 @@ terminal CLASS, PUBLIC, STATIC, VOID, MAIN, STRING, RETURN,
 	SEMICOLON, COMMA, ASSIGN, AND, LT, PLUS, MINUS, TIMES,
 	DOT, EXCLAMATION;
 
+/*Non terminals */
 non terminal Program;
+non terminal MainClass;
+non terminal ClassDecl;
+non terminal VarDecl;
+non terminal MethodDecl;
+non terminal FormalList;
+non terminal FormalRest;
+non terminal Type;
+non terminal Statement;
+non terminal Exp;
+non terminal ExpList;
+non terminal ExpRest;
+
+
+/* Precedences */
+precedence left AND;
+precedence left LT;
+precedence left PLUS,MINUS;
+precedence left TIMES;
+precedence right EXCLAMATION;
+precedence right LBRACK, DOT;
+
 
 start with Program;
 
 // Replace the dummy production below with a grammar for MiniJava.
+/* grammer */
+Program		::= MainClass ClassDecl;
+MainClass	::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE;
+ClassDecl	::= CLASS ID LBRACE VarDecl MethodDecl RBRACE
+			  |; //epsilon production for kleene star
+VarDecl		::= Type ID SEMICOLON
+			  |; //epsilon production for kleene star
+MethodDecl	::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE
+			  |; //epsilon
+FormalList	::= Type ID FormalRest
+			  |;
+FormalRest	::= COMMA Type ID
+			  |; //epsilon
+Type		::= INT LBRACK RBRACK
+			  | BOOLEAN
+			  | INT
+			  | ID;
+Statement	::= LBRACE Statement RBRACE
+			  | IF LPAREN Exp RPAREN Statement ELSE Statement
+			  | WHILE LPAREN Exp RPAREN Statement
+			  | PRINTLN LPAREN Exp RPAREN SEMICOLON
+			  | ID ASSIGN Exp SEMICOLON
+			  | ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON
+			  |; //epsilon
+Exp			::= Exp PLUS Exp
+			  | Exp MINUS Exp
+			  | Exp TIMES Exp
+			  | Exp AND Exp
+			  | Exp LT Exp
+			  | Exp LBRACK Exp RBRACK
+			  | Exp DOT LENGTH
+			  | Exp DOT ID LPAREN ExpList RPAREN
+			  | INTEGER_LITERAL
+			  | TRUE
+			  | FALSE
+			  | ID
+			  | THIS
+			  | NEW INT LBRACK Exp RBRACK
+			  | NEW ID LPAREN RPAREN
+			  | EXCLAMATION Exp
+			  | LPAREN Exp RPAREN;
+ExpList		::= Exp ExpRest
+			  |;
+ExpRest		::= COMMA Exp
+			  |; //epsilon
+			
 
-Program		::= ID
-		;
 
