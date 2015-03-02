@@ -1,0 +1,38 @@
+// Skeleton MiniJava Grammar 
+
+package parse;
+
+parser code {: 
+  errormsg.ErrorMsg errorMsg;
+
+  public void syntax_error(java_cup.runtime.Symbol current) {
+    report_error("Syntax error (" + current.sym + ")", current);
+  }
+
+  public void report_error(String message, java_cup.runtime.Symbol info) {
+    errorMsg.error(info.left, message);
+  }
+
+  public Grm(java_cup.runtime.Scanner scan, errormsg.ErrorMsg err) {
+    this(scan);
+    errorMsg = err;
+  }
+:};
+
+terminal ID, INTEGER_LITERAL;
+terminal CLASS, PUBLIC, STATIC, VOID, MAIN, STRING, RETURN,
+	INT, BOOLEAN, IF, ELSE, WHILE, PRINTLN, LENGTH,
+	TRUE, FALSE, THIS, NEW,
+	LBRACE, RBRACE, LPAREN, RPAREN, LBRACK, RBRACK,
+	SEMICOLON, COMMA, ASSIGN, AND, LT, PLUS, MINUS, TIMES,
+	DOT, EXCLAMATION;
+
+non terminal Program;
+
+start with Program;
+
+// Replace the dummy production below with a grammar for MiniJava.
+
+Program		::= ID
+		;
+
