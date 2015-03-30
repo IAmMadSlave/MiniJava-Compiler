@@ -1,5 +1,3 @@
-// Skeleton MiniJava Grammar 
-
 package parse;
 
 parser code {: 
@@ -41,6 +39,12 @@ non terminal Statement;
 non terminal Exp;
 non terminal ExpList;
 non terminal ExpRest;
+non terminal ClassDeclStar;
+non terminal VarDeclStar;
+non terminal MethodDeclStar;
+non terminal StatementStar;
+non terminal ExpRestStar;
+non terminal FormalRestStar;
 
 
 /* Precedences */
@@ -56,50 +60,56 @@ start with Program;
 
 // Replace the dummy production below with a grammar for MiniJava.
 /* grammer */
-Program		::= MainClass ClassDecl;
-MainClass	::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE;
-ClassDecl	::= CLASS ID LBRACE VarDecl MethodDecl RBRACE
-			  |; //epsilon production for kleene star
-VarDecl		::= Type ID SEMICOLON
-			  |; //epsilon production for kleene star
-MethodDecl	::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE
-			  |; //epsilon
-FormalList	::= Type ID FormalRest
-			  |;
-FormalRest	::= COMMA Type ID
-			  |; //epsilon
-Type		::= INT LBRACK RBRACK
-			  | BOOLEAN
-			  | INT
-			  | ID;
-Statement	::= LBRACE Statement RBRACE
-			  | IF LPAREN Exp RPAREN Statement ELSE Statement
-			  | WHILE LPAREN Exp RPAREN Statement
-			  | PRINTLN LPAREN Exp RPAREN SEMICOLON
-			  | ID ASSIGN Exp SEMICOLON
-			  | ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON
-			  |; //epsilon
-Exp			::= Exp PLUS Exp
-			  | Exp MINUS Exp
-			  | Exp TIMES Exp
-			  | Exp AND Exp
-			  | Exp LT Exp
-			  | Exp LBRACK Exp RBRACK
-			  | Exp DOT LENGTH
-			  | Exp DOT ID LPAREN ExpList RPAREN
-			  | INTEGER_LITERAL
-			  | TRUE
-			  | FALSE
-			  | ID
-			  | THIS
-			  | NEW INT LBRACK Exp RBRACK
-			  | NEW ID LPAREN RPAREN
-			  | EXCLAMATION Exp
-			  | LPAREN Exp RPAREN;
-ExpList		::= Exp ExpRest
-			  |;
-ExpRest		::= COMMA Exp
-			  |; //epsilon
+Program		   ::= MainClass ClassDeclStar;
+MainClass	   ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE;
+ClassDeclStar  ::= ClassDeclStar ClassDecl
+				 | ;
+ClassDecl	   ::= CLASS ID LBRACE VarDeclStar MethodDeclStar RBRACE;
+VarDeclStar	   ::= VarDeclStar VarDecl
+			     | ;
+VarDecl		   ::= Type ID SEMICOLON;
+MethodDeclStar ::= MethodDeclStar MethodDecl
+				 |	;
+MethodDecl	   ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDeclStar StatementStar RETURN Exp SEMICOLON RBRACE;
+FormalList	   ::= Type ID FormalRestStar
+			     |;
+FormalRestStar ::= FormalRestStar FormalRest
+				 |;
+FormalRest	   ::= COMMA Type ID;
+Type	   	   ::= INT LBRACK RBRACK
+			     | BOOLEAN
+			     | INT
+			     | ID;
+StatementStar  ::= Statement StatementStar
+				 | ;
+Statement	   ::= LBRACE StatementStar RBRACE
+			     | IF LPAREN Exp RPAREN Statement ELSE Statement
+			     | WHILE LPAREN Exp RPAREN Statement
+			     | PRINTLN LPAREN Exp RPAREN SEMICOLON
+			     | ID ASSIGN Exp SEMICOLON
+			     | ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON;
+Exp			   ::= Exp PLUS Exp
+			     | Exp MINUS Exp
+			     | Exp TIMES Exp
+			     | Exp AND Exp
+			     | Exp LT Exp
+			     | Exp LBRACK Exp RBRACK
+			     | Exp DOT LENGTH
+			     | Exp DOT ID LPAREN ExpList RPAREN
+			     | INTEGER_LITERAL
+			     | TRUE
+			     | FALSE
+			     | ID
+			     | THIS
+			     | NEW INT LBRACK Exp RBRACK
+			     | NEW ID LPAREN RPAREN
+			     | EXCLAMATION Exp
+			     | LPAREN Exp RPAREN;
+ExpList		   ::= Exp ExpRestStar
+			     |;
+ExpRestStar	   ::= ExpRestStar ExpRest
+			     |;
+ExpRest		   ::= COMMA Exp;
 			
 
 

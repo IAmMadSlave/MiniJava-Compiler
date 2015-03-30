@@ -1,0 +1,42 @@
+Abstract syntax for Preced.java:
+
+Program(44,
+  MainClass(44, Identifier(Preced), Identifier(a),
+    Print(105,
+      Call(124,
+        NewObject(124, Identifier(C)),
+        Identifier(foo),
+        ExpList(
+          IntegerLiteral(136, 15),
+          True(140))))),
+  ClassDeclList(
+    ClassDeclSimple(155, Identifier(C),
+      VarDeclList(),
+      MethodDeclList(
+        MethodDecl(167,IntegerType(174), Identifier(foo),
+          FormalList(
+            Formal(182,IntegerType(182), Identifier(n)),
+            Formal(189,BooleanType(189), Identifier(b))),
+          VarDeclList(
+            VarDecl(IntegerType(206), Identifier(i)),
+            VarDecl(IntArrayType(217), Identifier(a))),
+          StatementList(
+            Assign(231, Identifier(i),
+              Plus(237,
+                IntegerLiteral(235, 3),
+                ArrayLookup(241,
+                  IdentifierExp(239, a),
+                  IntegerLiteral(242, 31)))),
+            ArrayAssign(252, Identifier(a),
+              IdentifierExp(254, i),
+              Plus(261,
+                IntegerLiteral(259, 4),
+                ArrayLength(263,
+                  IdentifierExp(263, a))))),
+          Not(284,
+            Call(286,
+              IdentifierExp(286, b),
+              Identifier(g),
+              ExpList(
+                True(290)))))))))
+
