@@ -1,0 +1,34 @@
+Foo.java:10.3: c is already defined in Bar
+  boolean c; 
+  ^
+Foo.java:15.5: a is already defined in Bar.f(...)
+    boolean a; 
+    ^
+Foo.java:25.1: duplicate class: Bar
+class Bar { } 
+^
+Foo.java:3.36: non-static variable "this" cannot be referenced from a static context
+    System.out.println(new Bar().f(this)); 
+                                   ^
+Foo.java:18.10: incompatible types 
+found   : int
+required: boolean
+    x = b[4]; 
+         ^
+Foo.java:19.7: incompatible types 
+found   : boolean
+required: int
+    b[true] = d; 
+      ^
+Foo.java:19.15: cannot resolve symbol
+symbol  : variable d
+location: class Bar
+    b[true] = d; 
+              ^
+Foo.java:20.15: f(Foo) in Bar cannot be applied to (int, boolean, Foo)
+    b[b[2]] = this.f(c, x, a); 
+              ^
+Foo.java:21.13: operator + cannot be applied to int[],int
+    return b+7; 
+            ^
+9 errors

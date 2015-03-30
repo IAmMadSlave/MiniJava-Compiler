@@ -1,0 +1,1672 @@
+Opening files...
+Parsing specification from standard input...
+Checking specification...
+Building parse tables...
+  Computing non-terminal nullability...
+  Computing first sets...
+  Building state machine...
+  Filling in tables...
+*** Shift/Reduce conflict found in state #115
+  between VarDecl ::= (*) 
+  and     Type ::= (*) ID 
+  under symbol ID
+  Resolved in favor of shifting.
+
+  Checking for non-reduced productions...
+*** More conflicts encountered than expected -- parser generation aborted
+===== Terminals =====
+[0]EOF [1]error [2]ID [3]INTEGER_LITERAL [4]CLASS 
+[5]PUBLIC [6]STATIC [7]VOID [8]MAIN [9]STRING 
+[10]RETURN [11]INT [12]BOOLEAN [13]IF [14]ELSE 
+[15]WHILE [16]PRINTLN [17]LENGTH [18]TRUE [19]FALSE 
+[20]THIS [21]NEW [22]LBRACE [23]RBRACE [24]LPAREN 
+[25]RPAREN [26]LBRACK [27]RBRACK [28]SEMICOLON [29]COMMA 
+[30]ASSIGN [31]AND [32]LT [33]PLUS [34]MINUS 
+[35]TIMES [36]DOT [37]EXCLAMATION 
+
+===== Non terminals =====
+[0]$START [1]Program [2]MainClass [3]ClassDecl [4]VarDecl 
+[5]MethodDecl [6]FormalList [7]FormalRest [8]Type [9]Statement 
+[10]Exp [11]ExpList [12]ExpRest 
+
+===== Productions =====
+[0] $START ::= Program EOF 
+[1] Program ::= MainClass ClassDecl 
+[2] MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE 
+[3] ClassDecl ::= CLASS ID LBRACE VarDecl MethodDecl RBRACE 
+[4] ClassDecl ::= 
+[5] VarDecl ::= Type ID SEMICOLON 
+[6] VarDecl ::= 
+[7] MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE 
+[8] MethodDecl ::= 
+[9] FormalList ::= Type ID FormalRest 
+[10] FormalList ::= 
+[11] FormalRest ::= COMMA Type ID 
+[12] FormalRest ::= 
+[13] Type ::= INT LBRACK RBRACK 
+[14] Type ::= BOOLEAN 
+[15] Type ::= INT 
+[16] Type ::= ID 
+[17] Statement ::= LBRACE Statement RBRACE 
+[18] Statement ::= IF LPAREN Exp RPAREN Statement ELSE Statement 
+[19] Statement ::= WHILE LPAREN Exp RPAREN Statement 
+[20] Statement ::= PRINTLN LPAREN Exp RPAREN SEMICOLON 
+[21] Statement ::= ID ASSIGN Exp SEMICOLON 
+[22] Statement ::= ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON 
+[23] Statement ::= 
+[24] Exp ::= Exp PLUS Exp 
+[25] Exp ::= Exp MINUS Exp 
+[26] Exp ::= Exp TIMES Exp 
+[27] Exp ::= Exp AND Exp 
+[28] Exp ::= Exp LT Exp 
+[29] Exp ::= Exp LBRACK Exp RBRACK 
+[30] Exp ::= Exp DOT LENGTH 
+[31] Exp ::= Exp DOT ID LPAREN ExpList RPAREN 
+[32] Exp ::= INTEGER_LITERAL 
+[33] Exp ::= TRUE 
+[34] Exp ::= FALSE 
+[35] Exp ::= ID 
+[36] Exp ::= THIS 
+[37] Exp ::= NEW INT LBRACK Exp RBRACK 
+[38] Exp ::= NEW ID LPAREN RPAREN 
+[39] Exp ::= EXCLAMATION Exp 
+[40] Exp ::= LPAREN Exp RPAREN 
+[41] ExpList ::= Exp ExpRest 
+[42] ExpList ::= 
+[43] ExpRest ::= COMMA Exp 
+[44] ExpRest ::= 
+
+===== Viable Prefix Recognizer =====
+START lalr_state [0]: {
+  [MainClass ::= (*) CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+  [Program ::= (*) MainClass ClassDecl , {EOF }]
+  [$START ::= (*) Program EOF , {EOF }]
+}
+transition on CLASS to state [3]
+transition on MainClass to state [2]
+transition on Program to state [1]
+
+-------------------
+lalr_state [1]: {
+  [$START ::= Program (*) EOF , {EOF }]
+}
+transition on EOF to state [125]
+
+-------------------
+lalr_state [2]: {
+  [ClassDecl ::= (*) , {EOF }]
+  [Program ::= MainClass (*) ClassDecl , {EOF }]
+  [ClassDecl ::= (*) CLASS ID LBRACE VarDecl MethodDecl RBRACE , {EOF }]
+}
+transition on CLASS to state [92]
+transition on ClassDecl to state [91]
+
+-------------------
+lalr_state [3]: {
+  [MainClass ::= CLASS (*) ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on ID to state [4]
+
+-------------------
+lalr_state [4]: {
+  [MainClass ::= CLASS ID (*) LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on LBRACE to state [5]
+
+-------------------
+lalr_state [5]: {
+  [MainClass ::= CLASS ID LBRACE (*) PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on PUBLIC to state [6]
+
+-------------------
+lalr_state [6]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC (*) STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on STATIC to state [7]
+
+-------------------
+lalr_state [7]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC (*) VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on VOID to state [8]
+
+-------------------
+lalr_state [8]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID (*) MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on MAIN to state [9]
+
+-------------------
+lalr_state [9]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN (*) LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on LPAREN to state [10]
+
+-------------------
+lalr_state [10]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN (*) STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on STRING to state [11]
+
+-------------------
+lalr_state [11]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING (*) LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on LBRACK to state [12]
+
+-------------------
+lalr_state [12]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK (*) RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on RBRACK to state [13]
+
+-------------------
+lalr_state [13]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK (*) ID RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on ID to state [14]
+
+-------------------
+lalr_state [14]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID (*) RPAREN LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on RPAREN to state [15]
+
+-------------------
+lalr_state [15]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN (*) LBRACE Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on LBRACE to state [16]
+
+-------------------
+lalr_state [16]: {
+  [Statement ::= (*) WHILE LPAREN Exp RPAREN Statement , {RBRACE }]
+  [Statement ::= (*) ID ASSIGN Exp SEMICOLON , {RBRACE }]
+  [Statement ::= (*) IF LPAREN Exp RPAREN Statement ELSE Statement , {RBRACE }]
+  [Statement ::= (*) , {RBRACE }]
+  [Statement ::= (*) PRINTLN LPAREN Exp RPAREN SEMICOLON , {RBRACE }]
+  [Statement ::= (*) LBRACE Statement RBRACE , {RBRACE }]
+  [Statement ::= (*) ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON , {RBRACE }]
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE (*) Statement RBRACE RBRACE , {EOF CLASS }]
+}
+transition on PRINTLN to state [22]
+transition on IF to state [21]
+transition on WHILE to state [20]
+transition on Statement to state [19]
+transition on LBRACE to state [18]
+transition on ID to state [17]
+
+-------------------
+lalr_state [17]: {
+  [Statement ::= ID (*) ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+  [Statement ::= ID (*) LBRACK Exp RBRACK ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+}
+transition on ASSIGN to state [83]
+transition on LBRACK to state [82]
+
+-------------------
+lalr_state [18]: {
+  [Statement ::= (*) WHILE LPAREN Exp RPAREN Statement , {RBRACE }]
+  [Statement ::= (*) ID ASSIGN Exp SEMICOLON , {RBRACE }]
+  [Statement ::= (*) IF LPAREN Exp RPAREN Statement ELSE Statement , {RBRACE }]
+  [Statement ::= (*) , {RBRACE }]
+  [Statement ::= (*) PRINTLN LPAREN Exp RPAREN SEMICOLON , {RBRACE }]
+  [Statement ::= LBRACE (*) Statement RBRACE , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) LBRACE Statement RBRACE , {RBRACE }]
+  [Statement ::= (*) ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON , {RBRACE }]
+}
+transition on PRINTLN to state [22]
+transition on IF to state [21]
+transition on WHILE to state [20]
+transition on Statement to state [80]
+transition on LBRACE to state [18]
+transition on ID to state [17]
+
+-------------------
+lalr_state [19]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement (*) RBRACE RBRACE , {EOF CLASS }]
+}
+transition on RBRACE to state [78]
+
+-------------------
+lalr_state [20]: {
+  [Statement ::= WHILE (*) LPAREN Exp RPAREN Statement , {RETURN ELSE RBRACE }]
+}
+transition on LPAREN to state [74]
+
+-------------------
+lalr_state [21]: {
+  [Statement ::= IF (*) LPAREN Exp RPAREN Statement ELSE Statement , {RETURN ELSE RBRACE }]
+}
+transition on LPAREN to state [68]
+
+-------------------
+lalr_state [22]: {
+  [Statement ::= PRINTLN (*) LPAREN Exp RPAREN SEMICOLON , {RETURN ELSE RBRACE }]
+}
+transition on LPAREN to state [23]
+
+-------------------
+lalr_state [23]: {
+  [Statement ::= PRINTLN LPAREN (*) Exp RPAREN SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [26]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [24]: {
+  [Exp ::= NEW (*) ID LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= NEW (*) INT LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INT to state [62]
+transition on ID to state [61]
+
+-------------------
+lalr_state [25]: {
+  [Exp ::= TRUE (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [26]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= PRINTLN LPAREN Exp (*) RPAREN SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on RPAREN to state [59]
+transition on LT to state [34]
+
+-------------------
+lalr_state [27]: {
+  [Exp ::= FALSE (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [28]: {
+  [Exp ::= ID (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [29]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= EXCLAMATION (*) Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [58]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [30]: {
+  [Exp ::= THIS (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [31]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= LPAREN (*) Exp RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [33]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [32]: {
+  [Exp ::= INTEGER_LITERAL (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [33]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= LPAREN Exp (*) RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on RPAREN to state [35]
+transition on LT to state [34]
+
+-------------------
+lalr_state [34]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp LT (*) Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [57]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [35]: {
+  [Exp ::= LPAREN Exp RPAREN (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [36]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp AND (*) Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [56]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [37]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp PLUS (*) Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [55]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [38]: {
+  [Exp ::= (*) Exp MINUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp LBRACK (*) Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [53]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [39]: {
+  [Exp ::= Exp MINUS (*) Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [52]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [40]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp TIMES (*) Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [51]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [41]: {
+  [Exp ::= Exp DOT (*) ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp DOT (*) LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on LENGTH to state [43]
+transition on ID to state [42]
+
+-------------------
+lalr_state [42]: {
+  [Exp ::= Exp DOT ID (*) LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on LPAREN to state [44]
+
+-------------------
+lalr_state [43]: {
+  [Exp ::= Exp DOT LENGTH (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [44]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp DOT ID LPAREN (*) ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [ExpList ::= (*) Exp ExpRest , {RPAREN }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [ExpList ::= (*) , {RPAREN }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on ExpList to state [46]
+transition on Exp to state [45]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [45]: {
+  [ExpRest ::= (*) COMMA Exp , {RPAREN }]
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [ExpRest ::= (*) , {RPAREN }]
+  [ExpList ::= Exp (*) ExpRest , {RPAREN }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on LT to state [34]
+transition on LBRACK to state [38]
+transition on TIMES to state [40]
+transition on COMMA to state [49]
+transition on DOT to state [41]
+transition on PLUS to state [37]
+transition on ExpRest to state [48]
+transition on AND to state [36]
+transition on MINUS to state [39]
+
+-------------------
+lalr_state [46]: {
+  [Exp ::= Exp DOT ID LPAREN ExpList (*) RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on RPAREN to state [47]
+
+-------------------
+lalr_state [47]: {
+  [Exp ::= Exp DOT ID LPAREN ExpList RPAREN (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [48]: {
+  [ExpList ::= Exp ExpRest (*) , {RPAREN }]
+}
+
+-------------------
+lalr_state [49]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [ExpRest ::= COMMA (*) Exp , {RPAREN }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [50]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [50]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [ExpRest ::= COMMA Exp (*) , {RPAREN }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+
+-------------------
+lalr_state [51]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp TIMES Exp (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+
+-------------------
+lalr_state [52]: {
+  [Exp ::= Exp MINUS Exp (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+
+-------------------
+lalr_state [53]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp LBRACK Exp (*) RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+transition on RBRACK to state [54]
+
+-------------------
+lalr_state [54]: {
+  [Exp ::= Exp LBRACK Exp RBRACK (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [55]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp PLUS Exp (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+
+-------------------
+lalr_state [56]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp AND Exp (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+
+-------------------
+lalr_state [57]: {
+  [Exp ::= Exp LT Exp (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+
+-------------------
+lalr_state [58]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= EXCLAMATION Exp (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+
+-------------------
+lalr_state [59]: {
+  [Statement ::= PRINTLN LPAREN Exp RPAREN (*) SEMICOLON , {RETURN ELSE RBRACE }]
+}
+transition on SEMICOLON to state [60]
+
+-------------------
+lalr_state [60]: {
+  [Statement ::= PRINTLN LPAREN Exp RPAREN SEMICOLON (*) , {RETURN ELSE RBRACE }]
+}
+
+-------------------
+lalr_state [61]: {
+  [Exp ::= NEW ID (*) LPAREN RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on LPAREN to state [66]
+
+-------------------
+lalr_state [62]: {
+  [Exp ::= NEW INT (*) LBRACK Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on LBRACK to state [63]
+
+-------------------
+lalr_state [63]: {
+  [Exp ::= (*) Exp MINUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= NEW INT LBRACK (*) Exp RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [64]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [64]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= NEW INT LBRACK Exp (*) RBRACK , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+transition on RBRACK to state [65]
+
+-------------------
+lalr_state [65]: {
+  [Exp ::= NEW INT LBRACK Exp RBRACK (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [66]: {
+  [Exp ::= NEW ID LPAREN (*) RPAREN , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+transition on RPAREN to state [67]
+
+-------------------
+lalr_state [67]: {
+  [Exp ::= NEW ID LPAREN RPAREN (*) , {RPAREN LBRACK RBRACK SEMICOLON COMMA AND LT PLUS MINUS TIMES DOT }]
+}
+
+-------------------
+lalr_state [68]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= IF LPAREN (*) Exp RPAREN Statement ELSE Statement , {RETURN ELSE RBRACE }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [69]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [69]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= IF LPAREN Exp (*) RPAREN Statement ELSE Statement , {RETURN ELSE RBRACE }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on RPAREN to state [70]
+transition on LT to state [34]
+
+-------------------
+lalr_state [70]: {
+  [Statement ::= (*) WHILE LPAREN Exp RPAREN Statement , {ELSE }]
+  [Statement ::= IF LPAREN Exp RPAREN (*) Statement ELSE Statement , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) ID ASSIGN Exp SEMICOLON , {ELSE }]
+  [Statement ::= (*) IF LPAREN Exp RPAREN Statement ELSE Statement , {ELSE }]
+  [Statement ::= (*) , {ELSE }]
+  [Statement ::= (*) PRINTLN LPAREN Exp RPAREN SEMICOLON , {ELSE }]
+  [Statement ::= (*) LBRACE Statement RBRACE , {ELSE }]
+  [Statement ::= (*) ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON , {ELSE }]
+}
+transition on PRINTLN to state [22]
+transition on IF to state [21]
+transition on WHILE to state [20]
+transition on Statement to state [71]
+transition on LBRACE to state [18]
+transition on ID to state [17]
+
+-------------------
+lalr_state [71]: {
+  [Statement ::= IF LPAREN Exp RPAREN Statement (*) ELSE Statement , {RETURN ELSE RBRACE }]
+}
+transition on ELSE to state [72]
+
+-------------------
+lalr_state [72]: {
+  [Statement ::= (*) WHILE LPAREN Exp RPAREN Statement , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) ID ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) IF LPAREN Exp RPAREN Statement ELSE Statement , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) PRINTLN LPAREN Exp RPAREN SEMICOLON , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) LBRACE Statement RBRACE , {RETURN ELSE RBRACE }]
+  [Statement ::= IF LPAREN Exp RPAREN Statement ELSE (*) Statement , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+}
+transition on PRINTLN to state [22]
+transition on IF to state [21]
+transition on WHILE to state [20]
+transition on Statement to state [73]
+transition on LBRACE to state [18]
+transition on ID to state [17]
+
+-------------------
+lalr_state [73]: {
+  [Statement ::= IF LPAREN Exp RPAREN Statement ELSE Statement (*) , {RETURN ELSE RBRACE }]
+}
+
+-------------------
+lalr_state [74]: {
+  [Exp ::= (*) Exp MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= WHILE LPAREN (*) Exp RPAREN Statement , {RETURN ELSE RBRACE }]
+  [Exp ::= (*) Exp PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [75]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [75]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= WHILE LPAREN Exp (*) RPAREN Statement , {RETURN ELSE RBRACE }]
+  [Exp ::= Exp (*) DOT LENGTH , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {RPAREN LBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on RPAREN to state [76]
+transition on LT to state [34]
+
+-------------------
+lalr_state [76]: {
+  [Statement ::= (*) WHILE LPAREN Exp RPAREN Statement , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) ID ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) IF LPAREN Exp RPAREN Statement ELSE Statement , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) PRINTLN LPAREN Exp RPAREN SEMICOLON , {RETURN ELSE RBRACE }]
+  [Statement ::= WHILE LPAREN Exp RPAREN (*) Statement , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) LBRACE Statement RBRACE , {RETURN ELSE RBRACE }]
+  [Statement ::= (*) ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+}
+transition on PRINTLN to state [22]
+transition on IF to state [21]
+transition on WHILE to state [20]
+transition on Statement to state [77]
+transition on LBRACE to state [18]
+transition on ID to state [17]
+
+-------------------
+lalr_state [77]: {
+  [Statement ::= WHILE LPAREN Exp RPAREN Statement (*) , {RETURN ELSE RBRACE }]
+}
+
+-------------------
+lalr_state [78]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE (*) RBRACE , {EOF CLASS }]
+}
+transition on RBRACE to state [79]
+
+-------------------
+lalr_state [79]: {
+  [MainClass ::= CLASS ID LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID RPAREN LBRACE Statement RBRACE RBRACE (*) , {EOF CLASS }]
+}
+
+-------------------
+lalr_state [80]: {
+  [Statement ::= LBRACE Statement (*) RBRACE , {RETURN ELSE RBRACE }]
+}
+transition on RBRACE to state [81]
+
+-------------------
+lalr_state [81]: {
+  [Statement ::= LBRACE Statement RBRACE (*) , {RETURN ELSE RBRACE }]
+}
+
+-------------------
+lalr_state [82]: {
+  [Exp ::= (*) Exp MINUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= ID LBRACK (*) Exp RBRACK ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= (*) Exp AND Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [86]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [83]: {
+  [Exp ::= (*) Exp MINUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= ID ASSIGN (*) Exp SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= (*) Exp TIMES Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [84]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [84]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= ID ASSIGN Exp (*) SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= Exp (*) PLUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on SEMICOLON to state [85]
+transition on LT to state [34]
+
+-------------------
+lalr_state [85]: {
+  [Statement ::= ID ASSIGN Exp SEMICOLON (*) , {RETURN ELSE RBRACE }]
+}
+
+-------------------
+lalr_state [86]: {
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= ID LBRACK Exp (*) RBRACK ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= Exp (*) MINUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {LBRACK RBRACK AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on LT to state [34]
+transition on RBRACK to state [87]
+
+-------------------
+lalr_state [87]: {
+  [Statement ::= ID LBRACK Exp RBRACK (*) ASSIGN Exp SEMICOLON , {RETURN ELSE RBRACE }]
+}
+transition on ASSIGN to state [88]
+
+-------------------
+lalr_state [88]: {
+  [Exp ::= (*) Exp MINUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp PLUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Statement ::= ID LBRACK Exp RBRACK ASSIGN (*) Exp SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= (*) Exp AND Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [89]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [89]: {
+  [Statement ::= ID LBRACK Exp RBRACK ASSIGN Exp (*) SEMICOLON , {RETURN ELSE RBRACE }]
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on SEMICOLON to state [90]
+transition on LT to state [34]
+
+-------------------
+lalr_state [90]: {
+  [Statement ::= ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON (*) , {RETURN ELSE RBRACE }]
+}
+
+-------------------
+lalr_state [91]: {
+  [Program ::= MainClass ClassDecl (*) , {EOF }]
+}
+
+-------------------
+lalr_state [92]: {
+  [ClassDecl ::= CLASS (*) ID LBRACE VarDecl MethodDecl RBRACE , {EOF }]
+}
+transition on ID to state [93]
+
+-------------------
+lalr_state [93]: {
+  [ClassDecl ::= CLASS ID (*) LBRACE VarDecl MethodDecl RBRACE , {EOF }]
+}
+transition on LBRACE to state [94]
+
+-------------------
+lalr_state [94]: {
+  [Type ::= (*) ID , {ID }]
+  [VarDecl ::= (*) Type ID SEMICOLON , {PUBLIC RBRACE }]
+  [Type ::= (*) INT LBRACK RBRACK , {ID }]
+  [Type ::= (*) INT , {ID }]
+  [ClassDecl ::= CLASS ID LBRACE (*) VarDecl MethodDecl RBRACE , {EOF }]
+  [VarDecl ::= (*) , {PUBLIC RBRACE }]
+  [Type ::= (*) BOOLEAN , {ID }]
+}
+transition on INT to state [99]
+transition on BOOLEAN to state [98]
+transition on VarDecl to state [97]
+transition on Type to state [96]
+transition on ID to state [95]
+
+-------------------
+lalr_state [95]: {
+  [Type ::= ID (*) , {ID }]
+}
+
+-------------------
+lalr_state [96]: {
+  [VarDecl ::= Type (*) ID SEMICOLON , {ID PUBLIC RETURN IF WHILE PRINTLN LBRACE RBRACE }]
+}
+transition on ID to state [123]
+
+-------------------
+lalr_state [97]: {
+  [MethodDecl ::= (*) , {RBRACE }]
+  [MethodDecl ::= (*) PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+  [ClassDecl ::= CLASS ID LBRACE VarDecl (*) MethodDecl RBRACE , {EOF }]
+}
+transition on PUBLIC to state [103]
+transition on MethodDecl to state [102]
+
+-------------------
+lalr_state [98]: {
+  [Type ::= BOOLEAN (*) , {ID }]
+}
+
+-------------------
+lalr_state [99]: {
+  [Type ::= INT (*) LBRACK RBRACK , {ID }]
+  [Type ::= INT (*) , {ID }]
+}
+transition on LBRACK to state [100]
+
+-------------------
+lalr_state [100]: {
+  [Type ::= INT LBRACK (*) RBRACK , {ID }]
+}
+transition on RBRACK to state [101]
+
+-------------------
+lalr_state [101]: {
+  [Type ::= INT LBRACK RBRACK (*) , {ID }]
+}
+
+-------------------
+lalr_state [102]: {
+  [ClassDecl ::= CLASS ID LBRACE VarDecl MethodDecl (*) RBRACE , {EOF }]
+}
+transition on RBRACE to state [122]
+
+-------------------
+lalr_state [103]: {
+  [Type ::= (*) ID , {ID }]
+  [Type ::= (*) INT LBRACK RBRACK , {ID }]
+  [MethodDecl ::= PUBLIC (*) Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+  [Type ::= (*) INT , {ID }]
+  [Type ::= (*) BOOLEAN , {ID }]
+}
+transition on INT to state [99]
+transition on BOOLEAN to state [98]
+transition on Type to state [104]
+transition on ID to state [95]
+
+-------------------
+lalr_state [104]: {
+  [MethodDecl ::= PUBLIC Type (*) ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+}
+transition on ID to state [105]
+
+-------------------
+lalr_state [105]: {
+  [MethodDecl ::= PUBLIC Type ID (*) LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+}
+transition on LPAREN to state [106]
+
+-------------------
+lalr_state [106]: {
+  [MethodDecl ::= PUBLIC Type ID LPAREN (*) FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+  [Type ::= (*) ID , {ID }]
+  [Type ::= (*) INT LBRACK RBRACK , {ID }]
+  [FormalList ::= (*) , {RPAREN }]
+  [Type ::= (*) INT , {ID }]
+  [FormalList ::= (*) Type ID FormalRest , {RPAREN }]
+  [Type ::= (*) BOOLEAN , {ID }]
+}
+transition on INT to state [99]
+transition on BOOLEAN to state [98]
+transition on Type to state [108]
+transition on FormalList to state [107]
+transition on ID to state [95]
+
+-------------------
+lalr_state [107]: {
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList (*) RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+}
+transition on RPAREN to state [114]
+
+-------------------
+lalr_state [108]: {
+  [FormalList ::= Type (*) ID FormalRest , {RPAREN }]
+}
+transition on ID to state [109]
+
+-------------------
+lalr_state [109]: {
+  [FormalList ::= Type ID (*) FormalRest , {RPAREN }]
+  [FormalRest ::= (*) , {RPAREN }]
+  [FormalRest ::= (*) COMMA Type ID , {RPAREN }]
+}
+transition on FormalRest to state [111]
+transition on COMMA to state [110]
+
+-------------------
+lalr_state [110]: {
+  [Type ::= (*) ID , {ID }]
+  [Type ::= (*) INT LBRACK RBRACK , {ID }]
+  [Type ::= (*) INT , {ID }]
+  [Type ::= (*) BOOLEAN , {ID }]
+  [FormalRest ::= COMMA (*) Type ID , {RPAREN }]
+}
+transition on INT to state [99]
+transition on BOOLEAN to state [98]
+transition on Type to state [112]
+transition on ID to state [95]
+
+-------------------
+lalr_state [111]: {
+  [FormalList ::= Type ID FormalRest (*) , {RPAREN }]
+}
+
+-------------------
+lalr_state [112]: {
+  [FormalRest ::= COMMA Type (*) ID , {RPAREN }]
+}
+transition on ID to state [113]
+
+-------------------
+lalr_state [113]: {
+  [FormalRest ::= COMMA Type ID (*) , {RPAREN }]
+}
+
+-------------------
+lalr_state [114]: {
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN (*) LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+}
+transition on LBRACE to state [115]
+
+-------------------
+lalr_state [115]: {
+  [Type ::= (*) ID , {ID }]
+  [VarDecl ::= (*) Type ID SEMICOLON , {ID RETURN IF WHILE PRINTLN LBRACE }]
+  [Type ::= (*) INT LBRACK RBRACK , {ID }]
+  [Type ::= (*) INT , {ID }]
+  [VarDecl ::= (*) , {ID RETURN IF WHILE PRINTLN LBRACE }]
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE (*) VarDecl Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+  [Type ::= (*) BOOLEAN , {ID }]
+}
+transition on INT to state [99]
+transition on BOOLEAN to state [98]
+transition on VarDecl to state [116]
+transition on Type to state [96]
+transition on ID to state [95]
+
+-------------------
+lalr_state [116]: {
+  [Statement ::= (*) WHILE LPAREN Exp RPAREN Statement , {RETURN }]
+  [Statement ::= (*) ID ASSIGN Exp SEMICOLON , {RETURN }]
+  [Statement ::= (*) IF LPAREN Exp RPAREN Statement ELSE Statement , {RETURN }]
+  [Statement ::= (*) , {RETURN }]
+  [Statement ::= (*) PRINTLN LPAREN Exp RPAREN SEMICOLON , {RETURN }]
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl (*) Statement RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+  [Statement ::= (*) LBRACE Statement RBRACE , {RETURN }]
+  [Statement ::= (*) ID LBRACK Exp RBRACK ASSIGN Exp SEMICOLON , {RETURN }]
+}
+transition on PRINTLN to state [22]
+transition on IF to state [21]
+transition on WHILE to state [20]
+transition on Statement to state [117]
+transition on LBRACE to state [18]
+transition on ID to state [17]
+
+-------------------
+lalr_state [117]: {
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement (*) RETURN Exp SEMICOLON RBRACE , {RBRACE }]
+}
+transition on RETURN to state [118]
+
+-------------------
+lalr_state [118]: {
+  [Exp ::= (*) Exp MINUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT LENGTH , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) ID , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) LPAREN Exp RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LT Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) TRUE , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW ID LPAREN RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp TIMES Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp DOT ID LPAREN ExpList RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) THIS , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN (*) Exp SEMICOLON RBRACE , {RBRACE }]
+  [Exp ::= (*) Exp PLUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) FALSE , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) EXCLAMATION Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) Exp AND Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) INTEGER_LITERAL , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= (*) NEW INT LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+}
+transition on INTEGER_LITERAL to state [32]
+transition on LPAREN to state [31]
+transition on THIS to state [30]
+transition on EXCLAMATION to state [29]
+transition on ID to state [28]
+transition on FALSE to state [27]
+transition on Exp to state [119]
+transition on TRUE to state [25]
+transition on NEW to state [24]
+
+-------------------
+lalr_state [119]: {
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp (*) SEMICOLON RBRACE , {RBRACE }]
+  [Exp ::= Exp (*) DOT ID LPAREN ExpList RPAREN , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LT Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) MINUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) DOT LENGTH , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) AND Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) PLUS Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) LBRACK Exp RBRACK , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+  [Exp ::= Exp (*) TIMES Exp , {LBRACK SEMICOLON AND LT PLUS MINUS TIMES DOT }]
+}
+transition on DOT to state [41]
+transition on TIMES to state [40]
+transition on MINUS to state [39]
+transition on LBRACK to state [38]
+transition on PLUS to state [37]
+transition on AND to state [36]
+transition on SEMICOLON to state [120]
+transition on LT to state [34]
+
+-------------------
+lalr_state [120]: {
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON (*) RBRACE , {RBRACE }]
+}
+transition on RBRACE to state [121]
+
+-------------------
+lalr_state [121]: {
+  [MethodDecl ::= PUBLIC Type ID LPAREN FormalList RPAREN LBRACE VarDecl Statement RETURN Exp SEMICOLON RBRACE (*) , {RBRACE }]
+}
+
+-------------------
+lalr_state [122]: {
+  [ClassDecl ::= CLASS ID LBRACE VarDecl MethodDecl RBRACE (*) , {EOF }]
+}
+
+-------------------
+lalr_state [123]: {
+  [VarDecl ::= Type ID (*) SEMICOLON , {ID PUBLIC RETURN IF WHILE PRINTLN LBRACE RBRACE }]
+}
+transition on SEMICOLON to state [124]
+
+-------------------
+lalr_state [124]: {
+  [VarDecl ::= Type ID SEMICOLON (*) , {ID PUBLIC RETURN IF WHILE PRINTLN LBRACE RBRACE }]
+}
+
+-------------------
+lalr_state [125]: {
+  [$START ::= Program EOF (*) , {EOF }]
+}
+
+-------------------
+Closing files...
+------- CUP v0.10k Parser Generation Summary -------
+  1 error and 1 warning
+  38 terminals, 13 non-terminals, and 45 productions declared, 
+  producing 126 unique parse states.
+  0 terminals declared but not used.
+  0 non-terminals declared but not used.
+  0 productions never reduced.
+  1 conflict detected (0 expected).
+  No code produced.
+---------------------------------------------------- (v0.10k)

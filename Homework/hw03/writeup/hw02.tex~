@@ -1,0 +1,195 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{calc,shapes.multipart,chains,arrows}
+
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFormat{listing}{%
+\parbox{\textwidth}{\colorbox{gray}{\parbox{\textwidth}{#1#2#3}}\vskip-4pt}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName} % Top left header
+\chead{\hmwkClass\ (\hmwkClassInstructor\ \hmwkClassTime): \hmwkTitle} % Top center header
+\rhead{\hmwkDueDate} % Top right header
+\lfoot{\lastxmark} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+}
+
+%----------------------------------------------------------------------------------------
+%   COLORS AND LANGUAGAGE
+%----------------------------------------------------------------------------------------
+
+\lstset{
+    frame=lrb,xleftmargin=\fboxsep,xrightmargin=-\fboxsep,language=Java,basicstyle=\ttfamily,
+    breaklines=true,columns=fullflexible,keepspaces=true,escapeinside={\%*}{*)}
+       }
+
+%----------------------------------------------------------------------------------------
+%	NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Homework\ \#2} % Assignment title
+\newcommand{\hmwkDueDate}{Wednesday,\ Feburary\ 11,\ 2015} % Due date
+\newcommand{\hmwkClass}{COP\ 5621} % Course/class
+\newcommand{\hmwkClassTime}{6:25pm} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{Smith} % Teacher/lecturer
+\newcommand{\hmwkAuthorName}{Musa V. Ahmed \& Jose Acosta} % Your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+\belowcaptionskip=-10pt
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\begin{homeworkProblem}
+    In this assignment, we begin the compiler project by implementing a lexical analyzer for
+    MiniJava. To find out details of MiniJava's tokens, you will need to refer to the Appendix
+    on pages 484-486.
+
+    \vspace{2 mm}
+    We will not be using the tools JavaCC or SableCC which are discussed (briefly!) in Chapter
+    2. Instead we will be using tools called JLex and CIP; these are Java versions of the
+    classic Unix tools, lex and yacc. You can find the JLex Manual at the course Moodel page.
+
+    \vspace{2 mm}
+    As mentioned in the syllabus, you need to set some UNIX environment variables to access
+    JLex. Add the following lines to your \verb!.cshr! files:
+
+    \begin{lstlisting}[frame=none]
+    setenv JAVA_HOME /depot/JSE-1.8
+    setenv CLASSPATH "/homes/smithg/compiler:."
+    \end{lstlisting}
+
+
+    \vspace{-3 mm}
+    My \verb!/homes/smithg/compiler/minijava/chap2! directory contains a number of files to
+    help you; you can copy them to your directory with the command
+
+    \begin{lstlisting}[frame=none]
+    cp -rp /homes/smithg/compiler/minijava/chap2 .
+    \end{lstlisting}
+
+    \vspace{-3 mm}
+    The only file you need to modify is \verb!parse/MiniJava.lex!, which contains the JLex
+    specification. Once you have completed \verb!MiniJava.lex!, you can run JLex and compile
+    everything simply by typing 
+
+    \begin{lstlisting}[frame=none]
+    make
+    \end{lstlisting}
+
+    \vspace{-3 mm}
+    from \verb!chap2!; and then you can run your lexer by typing
+
+    \begin{lstlisting}[frame=none]
+    java parse.Main test.java
+    \end{lstlisting}
+
+    \vspace{-3 mm}
+    Please upload your \verb!MiniJava.lex! file to the Moodle web site, and also please prepare
+    a hard copy to submit in class. As always, it would be nice to include printouts of some
+    sample executions.
+
+    Here are a few more tips:
+    
+    \begin{itemize}[noitemsep]
+        \item You should treat everything written in \textbf{boldface} in the grammar on page
+            485 as a reserved word. You may also wish to look at \verb!parse/sym.java!, which
+            defines constants for all of the token that you must return. (It also defines a
+            constant for \verb!error!, but this is not a real token; it is used by CUP for
+            error recovery.) Note also that you should not recognize \textbf{extends}, which is
+            supported only when MiniJava is augmented with inheritance in Chapter 14.
+        \item Contrary to what is said on page 484, Java /* */ comments may \emph{not} be
+            nested.
+        \item To interface with CUP, your lexer must return token with class
+            \verb!java_cup/runtime\Symbol!. You can create such objects by calling the class
+            constructor or by using the handy method \verb!tok! defined in \verb!MiniJava.lex!.
+            Notice that a \verb!Symbol! has a \verb!value! field of class \verb!Object!, which
+            holds the semantic value of the token. For most MiniJava tokens, \verb!value! should be
+            null, but for an \verb!ID! it should be a \verb!String!, and for an
+            \verb!INTEGER_LITERAL! it should be an \verb!Integer!.
+        \item For printing nice error messages, the class \verb!errormsg/ErrorMsg! provides an
+            \verb!error! method that takes two parameters: an \verb!int pos!, which tells where
+            in the source file the error occured, and a \verb!String msg!. To get error
+            positions, using the JLex variable \verb!yychar!, which gives the position of the
+            last token matched.
+        \item You should use JLex \emph{lexical states} to deal with /* */ comments.
+        \item To test your lexer, you can try out the file \verb!test.java! and compare your
+            output with mine in \verb!test.out!.
+        \item We won't be using CUP until Chapter 3, but some of the code included in the
+            \verb!chap2/! skeleton files deals with the interface between JLex and CUP. If you
+            are curious about this, you can look at the CUP Manual on the course Moodle page.
+        \item This assignment is worth 10 points.
+    \end{itemize}
+    \clearpage
+
+    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={MiniJava.lex}]{MiniJava.lex}
+
+    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={test.java}]{test.java}
+    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={test.out}]{test.out}
+
+    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={test2.java}]{test2.java}
+    \lstinputlisting[language=Java,basicstyle=\ttfamily\scriptsize,frame=none,caption={test2.out}]{test2.out}
+
+    \section{Sources}
+    JLex Manual\\
+    https://www.cs.princeton.edu/~appel/modern/java/JLex/current/manual.html \\
+
+    JFlex Manual was also helpful\\
+    http://jflex.de/manual.html \\
+
+
+\end{homeworkProblem}
+\clearpage
+
+%----------------------------------------------------------------------------------------
+
+\end{document}
