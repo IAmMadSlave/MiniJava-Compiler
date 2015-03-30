@@ -76,7 +76,19 @@ public class BuildSymbolTableVisitor extends visitor.DepthFirstVisitor {
   // StatementList sL;
   // Exp e;
   public void visit(MethodDecl n) {
-    
+    String id = n.i.toString();
+
+    if (currMethod == null) {
+        currMethod = new MethodInfo(id, n.t);
+        if(classTable.addMethod(id, currMethod)) {
+
+        }
+        else {
+            n.duplicate = true;
+            errorMsg.error(n.pos, id + " is already defined in " + 
+              currClass.getName());
+        }
+    }
   }
 
   // Type t;
