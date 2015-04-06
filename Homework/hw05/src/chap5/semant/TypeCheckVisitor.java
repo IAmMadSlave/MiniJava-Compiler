@@ -11,6 +11,7 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
     private SymbolTable classTable;
     private ClassInfo currClass;
     private MethodInfo currMethod;
+    private String mainMethod;
 
     // Type constants
     final IntegerType INTTY = new IntegerType();
@@ -22,6 +23,7 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         classTable = s;
         currClass = null;
         currMethod = null;
+        mainMethod = null;
     }
 
     // Identifier i1,i2;
@@ -32,7 +34,13 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         String id = n.i1.toString();
         currClass = classTable.get(id);
 
+        mainMethod = id;
+
+        n.i1.accept(this);
+        n.i2.accept(this);
         n.s.accept(this);
+
+        mainMethod = null;
         return null;
     }
 
@@ -56,6 +64,8 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
                 }
             }
         }
+        currMethod = null;
+
         return null;
     }
 
@@ -70,6 +80,10 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
 
         if (!n.duplicate) {
             currMethod = currClass.getMethod(id);
+
+            n.t.accept(this);
+            n.i.accept(this);
+
             if (currMethod == null) {
                 errorMsg.error(n.pos, "cannot find symbol " + id);
             }
@@ -131,14 +145,16 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
     public Type visit(LessThan n) {
         Type t1 = n.e1.accept(this);
         Type t2 = n.e2.accept(this);
-        if (!equal(t1, t2, BOOLTY))
+        if (!equal(t1, t2, INTTY))
             errorMsg.error(n.pos, eIncompBiop("<", t1.toString(), t2.toString()));
         return BOOLTY;
     }
 
     // Exp e1;
     public Type visit(Not n) {
-        n.e.accept(this);
+        Type t1 = n.e.accept(this);
+        if (!(t1 instanceof BooleanType))
+            errorMsg.error(n.pos, "operator ! cannot be applied to " + t1.toString()); 
         return BOOLTY;
     }
 
@@ -173,8 +189,11 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         Type t1 = n.i.accept(this);
         Type t2 = n.e.accept(this);
 
+        if (t1 == null){
+            errorMsg.error(n.pos, "cannot resolve symbol: " + n.i.toString() + " in " + currClass.getName());
+        }
         if (!equal(t1, t2, t1)) {
-            errorMsg.error(n.pos, eIncompTypes(t1.toString(), t2.toString()));
+            errorMsg.error(n.e.pos, eIncompTypes(t2.toString(), t1.toString()));
         }
         return null;
     }
@@ -187,26 +206,30 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         Type t3 = n.e2.accept(this);
         
         if (t1 == null || !(t1 instanceof IntArrayType)) {
-            errorMsg.error(n.pos, " array required, but " + t1.toString() + " found");
+            if (t1 == null) {
+                errorMsg.error(n.pos, " undeclared identifier '" + n.i.toString() + "'");
+            }
+            else {
+                errorMsg.error(n.pos, " array required, but " + t1.toString() + " found");
+            }
         }
         if (t2 == null || !(t2 instanceof IntegerType)) {
             if (t2 == null) {
-                errorMsg.error(n.pos, eIncompTypes("null", INTTY.toString()));
+                errorMsg.error(n.e1.pos, eIncompTypes("null", INTTY.toString()));
             }
             else {
-                errorMsg.error(n.pos, eIncompTypes(t2.toString(), INTTY.toString()));
+                errorMsg.error(n.e1.pos, eIncompTypes(t2.toString(), INTTY.toString()));
             }
         }
         if (t3 == null || !(t3 instanceof IntegerType)) {
             if (t3 == null) {
-                errorMsg.error(n.pos, eIncompTypes("null", INTTY.toString()));
+                errorMsg.error(n.e2.pos, eIncompTypes("null", INTTY.toString()));
             }
             else {
-                errorMsg.error(n.pos, eIncompTypes(t3.toString(), INTTY.toString()));
+                errorMsg.error(n.e2.pos, eIncompTypes(t3.toString(), INTTY.toString()));
             }
         }
 
-        System.out.println("passed");
         return null;
     }
 
@@ -290,6 +313,7 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
             return v1.type;
         }
 
+
         return null;            
     }
 
@@ -316,6 +340,9 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
 
     // This
     public Type visit(This n) {
+        if (currClass == classTable.get(mainMethod)) {
+            errorMsg.error(n.pos, "non-static variable cannot be referenced from a static context");
+        }
         if (currClass == null) {
             errorMsg.error(n.pos, " illegal use of this");
         }
@@ -338,7 +365,7 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         if (classTable.get(id) == null) {
             errorMsg.error(n.pos, " unknown class type " + id);
         }
-        return n.i.accept(this);
+        return new IdentifierType(id);
     }
 
     // Exp e;
@@ -350,6 +377,7 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         MethodInfo mi = null;
 
         Type t1 = n.e.accept(this);
+
         if (t1 == null) {
             return null;
         }
@@ -360,14 +388,16 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         else {
             ClassInfo ci = classTable.get(t1.toString());
             if (ci != null) {
-                n.fullname = ci.getName() + "." + id;
+                n.fullname = ci.getName() + "$" + id;
 
                 String temp = "(";
                 for (int i = 0; i < n.el.size(); i++) {
                     Type t2 = n.el.elementAt(i).accept(this);
                     temp += t2.toString() + ", ";
                 }
-                temp = temp.substring(0, temp.length()-2);
+                if (temp.length() > 2) {
+                    temp = temp.substring(0, temp.length()-2);
+                }
                 temp += ")";
 
                 mi = ci.getMethod(id);
