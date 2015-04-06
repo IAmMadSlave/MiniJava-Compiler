@@ -185,16 +185,28 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
         Type t1 = n.i.accept(this);
         Type t2 = n.e1.accept(this);
         Type t3 = n.e2.accept(this);
-
+        
         if (t1 == null || !(t1 instanceof IntArrayType)) {
             errorMsg.error(n.pos, " array required, but " + t1.toString() + " found");
         }
-        if (!(t2 instanceof IntegerType)) {
-            errorMsg.error(n.pos, eIncompTypes(t2.toString(), INTTY.toString()));
+        if (t2 == null || !(t2 instanceof IntegerType)) {
+            if (t2 == null) {
+                errorMsg.error(n.pos, eIncompTypes("null", INTTY.toString()));
+            }
+            else {
+                errorMsg.error(n.pos, eIncompTypes(t2.toString(), INTTY.toString()));
+            }
         }
-        if (!(t3 instanceof IntegerType)) {
-            errorMsg.error(n.pos, eIncompTypes(t3.toString(), INTTY.toString()));
+        if (t3 == null || !(t3 instanceof IntegerType)) {
+            if (t3 == null) {
+                errorMsg.error(n.pos, eIncompTypes("null", INTTY.toString()));
+            }
+            else {
+                errorMsg.error(n.pos, eIncompTypes(t3.toString(), INTTY.toString()));
+            }
         }
+
+        System.out.println("passed");
         return null;
     }
 
@@ -283,7 +295,7 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
 
     // IdentiferExp
     public Type visit(IdentifierExp n) {
-        String id = n.toString();
+        String id = n.s.toString();
 
         VariableInfo v1 = null;
         if (currMethod != null) {
@@ -304,9 +316,6 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
 
     // This
     public Type visit(This n) {
-        if (insideMain) {
-            errorMsg.error(n.pos, "non-static variable cannot be referenced from static context");
-        }
         if (currClass == null) {
             errorMsg.error(n.pos, " illegal use of this");
         }
