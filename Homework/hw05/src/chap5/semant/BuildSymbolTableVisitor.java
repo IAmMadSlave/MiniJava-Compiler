@@ -80,7 +80,7 @@ public class BuildSymbolTableVisitor extends visitor.DepthFirstVisitor {
 
         if (currMethod == null) {
             currMethod = new MethodInfo(id, n.t);
-            if(classTable.addMethod(id, currMethod)) {
+            if(currClass.addMethod(id, currMethod)) {
                 for (int i = 0; i < n.fl.size(); i++) {
                     n.fl.elementAt(i).accept(this);
                 }
@@ -107,6 +107,7 @@ public class BuildSymbolTableVisitor extends visitor.DepthFirstVisitor {
         if (!currMethod.addFormal(id, new VariableInfo(n.t))) {
             errorMsg.error(n.pos, id + " is already defined in " + 
                     currClass.getName() + "." + currMethod.getName() +
-                    "." + currMethod.getFormalTypes())
+                    "." + currMethod.getFormalsTypes());
+        }
     }
 }
