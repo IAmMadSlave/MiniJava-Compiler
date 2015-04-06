@@ -340,7 +340,7 @@ public class TypeCheckVisitor extends visitor.TypeDepthFirstVisitor {
 
     // This
     public Type visit(This n) {
-        if (currClass == classTable.get(mainMethod)) {
+        if (mainMethod != null && currClass == classTable.get(mainMethod)) {
             errorMsg.error(n.pos, "non-static variable cannot be referenced from a static context");
         }
         if (currClass == null) {
