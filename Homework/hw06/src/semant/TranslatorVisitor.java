@@ -70,6 +70,32 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
 	  return null;
     }
 
+    // helpers for MethodDecl
+    public tree.Stm translateStatement(StatementList sl, int pos) {
+      if (sl.size() < 1) {
+          return new tree.EXPR(new tree.CONST(0));
+      }
+
+      if (pos == sl.size() - 1) {
+        return sl.elementAt(pos).accept(this).unNx();
+      }
+
+      tree.Stm exp = sl.elementAt(pos).accept(this).unNx();
+      return new tree.SEQ(exp, translateStatement(sl, pos + 1);
+    }
+
+    public util.BoolList generateFalseBoolList(int size) {
+      util.BoolList boolList = new util.BoolList(false, null);
+      util.BoolList end = boolList;
+
+      for (int i = 0; i < size - 1; i ++) {
+        end.tail = new util.BoolList(false, null);
+        end = end.tail;
+      }
+
+      return boolList;
+    }
+
     // Type t;
     // Identifier i;
     // FormalList fl;
@@ -81,30 +107,30 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
 	  String fullname = currClass.getName() + "$" + n.i.s; 
 	  currFrame = currFrame.newFrame(new temp.Label(fullname), generateFalseBL(n.fl.size() + 1));
 
-	  int cnt = 0;
+	  int count = 0;
 	  frame.AccessList curr = currFrame.formals.tail;
 	  while(curr != null) {
-	    VariableInfo vInfo = currMethod.getVar(n.fl.elementAt(cnt++).i.s);
-	    vInfo.access = curr.head;
+	    VariableInfo variableInfo = currMethod.getVar(n.fl.elementAt(cnt++).i.s);
+	    variableInfo.access = curr.head;
 	    curr = curr.tail;
 	  }
 
-	  currThis = currFrame.formals.head.exp(new tree.TEMP(currFrame.FP())); //set up currThis for future references
+	  currThis = currFrame.formals.head.exp(new tree.TEMP(currFrame.FP())); 
 
 	  for(int i = 0; i < n.vl.size(); i++)  {
-	    VariableInfo vInfo = currMethod.getVar(n.vl.elementAt(i).i.s);
-	    vInfo.access = currFrame.allocLocal(false);
+	    VariableInfo variableInfo = currMethod.getVar(n.vl.elementAt(i).i.s);
+	    variableInfo.access = currFrame.allocLocal(false);
 	  }
 
-	  tree.Stm bodySeq = buildSEQ(n.sl, 0); //build SEQ from statements in method
-	  if(bodySeq == null)
-	    bodySeq = new tree.MOVE(new tree.TEMP(currFrame.RVCallee()),n.e.accept(this).unEx());
+	  tree.Stm bodySequence = translateStatement(n.sl, 0); 
+	  if(bodySequence == null)
+	    bodySequence = new tree.MOVE(new tree.TEMP(currFrame.RVCallee()),n.e.accept(this).unEx());
 	  else
-	    bodySeq = new tree.SEQ(bodySeq, new tree.MOVE(new tree.TEMP(currFrame.RVCallee()),n.e.accept(this).unEx()));
+	    bodySequence = new tree.SEQ(bodySequence, new tree.MOVE(new tree.TEMP(currFrame.RVCallee()),n.e.accept(this).unEx()));
 
-	  Exp methodman = new Nx(bodySeq);
-	  procEntryExit(methodman, currFrame);
-	  return methodman;
+	  Exp method = new Nx(bodySequence);
+	  procEntryExit(method, currFrame);
+	  return method;
     }
 
     // StatementList sl;
