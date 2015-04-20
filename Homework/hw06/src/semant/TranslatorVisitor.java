@@ -81,7 +81,7 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
       }
 
       tree.Stm exp = sl.elementAt(pos).accept(this).unNx();
-      return new tree.SEQ(exp, translateStatement(sl, pos + 1);
+      return new tree.SEQ(exp, translateStatement(sl, pos + 1));
     }
 
     public util.BoolList generateFalseBoolList(int size) {
@@ -105,12 +105,12 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
     public semant.Exp visit(MethodDecl n) {
 	  currMethod = currClass.getMethod(n.i.s);
 	  String fullname = currClass.getName() + "$" + n.i.s; 
-	  currFrame = currFrame.newFrame(new temp.Label(fullname), generateFalseBL(n.fl.size() + 1));
+	  currFrame = currFrame.newFrame(new temp.Label(fullname), generateFalseBoolList(n.fl.size() + 1));
 
 	  int count = 0;
 	  frame.AccessList curr = currFrame.formals.tail;
 	  while(curr != null) {
-	    VariableInfo variableInfo = currMethod.getVar(n.fl.elementAt(cnt++).i.s);
+	    VariableInfo variableInfo = currMethod.getVar(n.fl.elementAt(count++).i.s);
 	    variableInfo.access = curr.head;
 	    curr = curr.tail;
 	  }
@@ -135,7 +135,7 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
 
     // StatementList sl;
     public semant.Exp visit(Block n) {
-	  tree.Stm currentStatement = buildSEQ(n.sl, 0);
+	  tree.Stm currentStatement = translateStatement(n.sl, 0);
 	  return new Nx(currentStatement);
     }
 
@@ -247,6 +247,19 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
     public semant.Exp visit(ArrayLength n) {
 	  tree.Exp value = n.e.accept(this).unEx(); // first address is length of the array
 	  return new Ex(value);
+    }
+
+    // helper for Call
+    public tree.ExpList buildExpList(syntaxtree.ExpList expList, int pos) {
+      if (expList.size() == 0) {
+        return null;    
+      }
+
+      if (pos == expList.size() - 1) {
+        return new tree.ExpList(expList.elementAt(pos).accept(this).unEx(), null);
+      }
+
+      return new tree.ExpList(expList.elementAt(pos).accept(this).unEx(), buildExpList(expList, pos + 1));
     }
 
     // Exp e;
@@ -512,44 +525,5 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
 		                        new tree.SEQ( a.unCx(tt, ff),
 			new tree.SEQ(new tree.LABEL(f), b.unCx(tt, ff)))));
 	  }
-    }
-
-    //Auxiliary auxiliary functions
-
-    //generates BoolList of given size for use in call to newFrame
-    //for now, defaults all values as false
-    public util.BoolList generateFalseBL(int size) {
-	  util.BoolList blist = new util.BoolList(false, null);
-	  util.BoolList end = blist;
-
-	  for(int i = 0; i < size-1; i++) {
-	    end.tail = new util.BoolList(false, null);
-	    end = end.tail;
-	  }
-
-	  return blist;
-    }
-
-    //builds multi-SEQ structure from given syntaxtree.StatementList
-    public tree.Stm buildSEQ(StatementList sl, int pos) {
-	  if(sl.size() <= 0)
-	    return new tree.EXPR(new tree.CONST(0));
-      
-	  if(pos == sl.size()-1)
-	    return sl.elementAt(pos).accept(this).unNx();
-
-	  tree.Stm exp = sl.elementAt(pos).accept(this).unNx();
-
-	  return new tree.SEQ(exp, buildSEQ(sl, pos+1));
-    }
-
-    public tree.ExpList buildExpList(syntaxtree.ExpList lst, int pos) {
-	  if(lst.size() == 0)
-	    return null;
-	  if(pos == lst.size() - 1)
-	    return new tree.ExpList(lst.elementAt(pos).accept(this).unEx(), null);
-
-	  return new tree.ExpList(lst.elementAt(pos).accept(this).unEx(),
-				buildExpList(lst, pos + 1));
     }
 }
