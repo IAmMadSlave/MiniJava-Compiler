@@ -191,10 +191,10 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
     public semant.Exp visit(ArrayAssign n) {
 	  tree.Exp arrayAddress = n.i.accept(this).unEx(); 
 	  tree.Exp index = n.e1.accept(this).unEx();
-	  index = plus(index, new tree.CONST(1), true); 
+	  index = plus(index, new tree.CONST(1)); 
 
 	  tree.Exp allocation = mul(new tree.CONST(currFrame.wordSize()), index);
-	  tree.Stm arrayAssignment = new tree.MOVE(new tree.MEM(plus(arrayAddress, allocation, true)), n.e2.accept(this).unEx());
+	  tree.Stm arrayAssignment = new tree.MOVE(new tree.MEM(plus(arrayAddress, allocation)), n.e2.accept(this).unEx());
 
 	  return new Nx(arrayAssignment);
     }
@@ -216,14 +216,14 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
     public semant.Exp visit(Plus n) {
 	  tree.Exp left = ((Ex)n.e1.accept(this)).unEx();
 	  tree.Exp right = ((Ex)n.e2.accept(this)).unEx();
-	  return new Ex(plus(left, right, true));
+	  return new Ex(plus(left, right));
     }
 
     // Exp e1,e2;
     public semant.Exp visit(Minus n) {
 	  tree.Exp left = ((Ex)n.e1.accept(this)).unEx();
 	  tree.Exp right = ((Ex)n.e2.accept(this)).unEx();
-	  return new Ex(plus(left, right, false));
+	  return new Ex(minus(left, right));
     }
 
     // Exp e1,e2;
@@ -237,10 +237,10 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
     public semant.Exp visit(ArrayLookup n) {
 	  tree.Exp arrayAddress = n.e1.accept(this).unEx(); //base address
 	  tree.Exp index = n.e2.accept(this).unEx();
-	  index = plus(index, new tree.CONST(1), true); //compensate for length spot in array
+	  index = plus(index, new tree.CONST(1)); //compensate for length spot in array
 
 	  tree.Exp allocation = mul(new tree.CONST(currFrame.wordSize()), index);
-	  return new Ex(new tree.MEM(plus(arrayAddress, allocation, true)));
+	  return new Ex(new tree.MEM(plus(arrayAddress, allocation)));
     }
 
     // Exp e;
@@ -324,7 +324,7 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
 					       new tree.ExpList(new tree.CONST(currFrame.wordSize()), null));
 	  }
 	  else
-	    parameters = new tree.ExpList(plus(newArray, new tree.CONST(1), true),
+	    parameters = new tree.ExpList(plus(newArray, new tree.CONST(1)),
 				      new tree.ExpList(new tree.CONST(currFrame.wordSize()), null));
 
 	  temp.Temp temp = new temp.Temp();
@@ -380,11 +380,11 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
 
     // plus and mul are useful abbreviations that could do simple optimizations.
     
-    private tree.Exp plus(tree.Exp e1, tree.Exp e2, boolean plus) {
-	  if(!plus)
-	    return new tree.BINOP(tree.BINOP.MINUS, e1, e2);
-
+    private tree.Exp plus(tree.Exp e1, tree.Exp e2) {
 	  return new tree.BINOP(tree.BINOP.PLUS, e1, e2);
+    }
+    private tree.Exp minus(tree.Exp e1, tree.Exp e2) {
+	  return new tree.BINOP(tree.BINOP.MINUS, e1, e2);
     }
 
     private tree.Exp mul(tree.Exp e1, tree.Exp e2) {
@@ -405,7 +405,7 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor
 		  if(offset == 0)
 		    return new tree.MEM(basePtr);
 
-	      return new tree.MEM(plus(basePtr, new tree.CONST(offset), true));
+	      return new tree.MEM(plus(basePtr, new tree.CONST(offset)));
 	  }
     }
 
