@@ -118,7 +118,24 @@ public class TranslatorVisitor extends visitor.ExpDepthFirstVisitor {
   // Exp e;
   // Identifier i;
   // ExpList el;
-  public semant.Exp visit(Call n) {}
+  public semant.Exp visit(Call n)
+	{
+		tree.Exp caller = n.e.accept(this).unEx();
+		tree.ExpList params = buildExpList(n.el, 0);
+		params = new tree.ExpList(caller, params); //add implicit parameter
+		tree.Exp call  = new tree.CALL(new tree.NAME(new temp.Label(n.fullname)), params);
+		return new Ex(call);
+	}
+  public tree.ExpList buildExpList(syntaxtree.ExpList lst, int pos)
+	{
+	if(lst.size() == 0)
+		return null;
+	if(pos == lst.size() - 1)
+		return new tree.ExpList(lst.elementAt(pos).accept(this).unEx(), null);
+
+	return new tree.ExpList(lst.elementAt(pos).accept(this).unEx(),
+				buildExpList(lst, pos + 1));
+	}
 
   // Identifier i;
   // VarDeclList vl;
