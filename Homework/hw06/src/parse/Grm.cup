@@ -1,0 +1,208 @@
+
+
+package parse;
+
+import syntaxtree.*;
+
+action code {:
+
+  // An abbreviation for creating identifiers.
+  static Identifier id(String s) {
+    return new Identifier(s);
+  }
+
+:};
+
+parser code {: 
+  errormsg.ErrorMsg errorMsg;
+
+  public void syntax_error(java_cup.runtime.Symbol current) {
+    report_error("Syntax error (" + current.sym + ")", current);
+  }
+
+  public void report_error(String message, java_cup.runtime.Symbol info) {
+    errorMsg.error(info.left, message);
+  }
+
+  public Grm(java_cup.runtime.Scanner scan, errormsg.ErrorMsg err) {
+    this(scan);
+    errorMsg = err;
+  }
+:};
+
+/*terminals */
+terminal String ID;
+terminal Integer INTEGER_LITERAL;
+terminal CLASS, PUBLIC, STATIC, VOID, MAIN, STRING, RETURN,
+	INT, BOOLEAN, IF, ELSE, WHILE, PRINTLN, LENGTH,
+	TRUE, FALSE, THIS, NEW,
+	LBRACE, RBRACE, LPAREN, RPAREN, LBRACK, RBRACK,
+	SEMICOLON, COMMA, ASSIGN, AND, LT, PLUS, MINUS, TIMES,
+	DOT, EXCLAMATION;
+
+/*Non terminals */
+non terminal syntaxtree.Program Program;
+non terminal syntaxtree.MainClass MainClass;
+non terminal syntaxtree.ClassDecl ClassDecl;
+non terminal syntaxtree.VarDecl VarDecl;
+non terminal syntaxtree.MethodDecl MethodDecl;
+non terminal syntaxtree.FormalList FormalList;
+non terminal syntaxtree.FormalList FormalRest;
+non terminal syntaxtree.Type Type;
+non terminal syntaxtree.Statement Statement;
+non terminal syntaxtree.Exp Exp;
+non terminal syntaxtree.ExpList ExpList;
+non terminal syntaxtree.ExpList ExpRest;
+non terminal syntaxtree.ClassDeclList ClassDeclStar;
+non terminal syntaxtree.VarDeclList VarDeclStar;
+non terminal syntaxtree.MethodDeclList MethodDeclStar;
+non terminal syntaxtree.StatementList StatementList;
+non terminal syntaxtree.StatementList StatementRest;
+
+
+/* Precedences */
+precedence left AND;
+precedence left LT;
+precedence left PLUS,MINUS;
+precedence left TIMES;
+precedence right EXCLAMATION;
+precedence right LBRACK, DOT;
+
+
+start with Program;
+
+
+Program		::= MainClass:mc ClassDeclStar:cds
+					{: RESULT = new Program(mcleft, mc, cds); :} ;
+
+
+
+MainClass	::= CLASS:c ID:i1 LBRACE PUBLIC STATIC VOID MAIN LPAREN STRING LBRACK RBRACK ID:i2 RPAREN LBRACE Statement:s RBRACE RBRACE
+					{: RESULT = new MainClass(cleft, id(i1), id(i2), s); :} ;
+
+
+ClassDeclStar ::= ClassDeclStar:cds ClassDecl:cd {: cds.addElement(cd); RESULT = cds; :}
+				| {: RESULT = new ClassDeclList(); :} ;
+				
+				
+				
+ClassDecl	::= CLASS:c ID:i LBRACE VarDeclStar:vds MethodDeclStar:mds RBRACE
+					{: RESULT = new ClassDeclSimple(cleft, id(i), vds, mds); :};
+
+
+
+VarDeclStar	::= VarDeclStar:vds VarDecl:vd {: vds.addElement(vd); RESULT = vds; :}
+			  | {: RESULT = new VarDeclList(); :};
+			  
+			  
+			  
+VarDecl		::= Type:t ID:i SEMICOLON {: RESULT = new VarDecl(ileft, t, id(i)); :};
+
+
+MethodDeclStar	::= MethodDeclStar:mds MethodDecl:md {: mds.addElement(md); RESULT = mds; :}
+				 |	{: RESULT = new MethodDeclList(); :};
+				 
+				 
+MethodDecl	::= PUBLIC:p Type:t ID:i LPAREN FormalList:fl RPAREN LBRACE VarDeclStar:vds StatementList:sL RETURN Exp:e SEMICOLON RBRACE
+				{:  RESULT = new MethodDecl(pleft, t, id(i), fl, vds, sL, e); :} ;
+				
+				
+FormalList	::= Type:t ID:i
+				{:
+					FormalList lst = new FormalList();
+					lst.addElement(new Formal(tleft, t, id(i)));
+					RESULT = lst;
+				:}
+			  | Type:t ID:i COMMA FormalRest:fR
+				{:
+					FormalList lst = new FormalList();
+					lst.addElement(new Formal(tleft, t, id(i)));
+					for(int j = 0; j < fR.size(); j++)
+					{
+						lst.addElement(fR.elementAt(j));
+					}
+					RESULT = lst;
+				:}
+			  | {: RESULT = new FormalList(); :} ;
+
+FormalRest	::= Type:t ID:i
+				{:
+					FormalList lst = new FormalList();
+					lst.addElement(new Formal(tleft, t, id(i)));
+					RESULT = lst;
+				:}
+			  | FormalRest:fR COMMA Type:t ID:i
+				{:
+					fR.addElement(new Formal(tleft, t, id(i)));
+					RESULT = fR;
+				:};
+
+
+Type		::= INT:i LBRACK RBRACK {: RESULT = new IntArrayType(ileft); :}
+			  | BOOLEAN:b {: RESULT = new BooleanType(bleft); :}
+			  | INT:i {: RESULT = new IntegerType(ileft); :}
+			  | ID:i {:RESULT = new IdentifierType(ileft, i); :};
+			  
+			  
+StatementList	::= Statement:s StatementRest:sR
+		    {:
+		       StatementList lst = new StatementList();
+		       lst.addElement(s);
+		       for(int i = 0; i < sR.size(); i++){
+		          lst.addElement(sR.elementAt(i));
+		       }
+		       RESULT = lst;
+		    :}
+				|   {: RESULT = new StatementList(); :} ;
+				
+
+StatementRest	::= StatementRest:sR Statement:s
+					{: sR.addElement(s); RESULT = sR; :}
+				|   {: RESULT = new StatementList(); :} ;
+				
+				
+Statement	::= LBRACE StatementList:sL RBRACE {: RESULT = new Block(sLleft, sL); :}
+			  | IF:i LPAREN Exp:e RPAREN Statement:s1 ELSE Statement:s2 {: RESULT = new If(ileft, e, s1, s2); :}
+			  | WHILE:w LPAREN Exp:e RPAREN Statement:s {: RESULT = new While(wleft, e, s); :}
+			  | PRINTLN:p LPAREN Exp:e RPAREN SEMICOLON {: RESULT = new Print(pleft, e); :}
+			  | ID:i ASSIGN:a Exp:e SEMICOLON {: RESULT = new Assign(ileft, id(i), e); :}
+			  | ID:i LBRACK Exp:e1 RBRACK ASSIGN:a Exp:e2 SEMICOLON {: RESULT = new ArrayAssign(ileft, id(i), e1, e2); :};
+			  
+			  
+			  
+Exp			::= Exp:e1 PLUS:p Exp:e2 {: RESULT = new Plus(pleft, e1, e2); :}
+			  | Exp:e1 MINUS:m Exp:e2 {: RESULT = new Minus(mleft, e1, e2); :}
+			  | Exp:e1 TIMES:t Exp:e2 {: RESULT = new Times(tleft, e1, e2); :}
+			  | Exp:e1 AND:a Exp:e2 {: RESULT = new And(aleft, e1, e2); :}
+			  | Exp:e1 LT:l Exp:e2 {: RESULT = new LessThan(lleft, e1, e2); :}
+			  | Exp:e1 LBRACK:l Exp:e2 RBRACK {: RESULT = new ArrayLookup(lleft, e1, e2); :}
+			  | Exp:e1 DOT LENGTH {: RESULT = new ArrayLength(e1left, e1); :}
+			  | Exp:e1 DOT:d ID:i LPAREN ExpList:eL RPAREN {: RESULT = new Call(dleft, e1, id(i), eL); :}
+			  | INTEGER_LITERAL:i {: RESULT = new IntegerLiteral(ileft, i); :}
+			  | TRUE:t {: RESULT = new True(tleft); :}
+			  | FALSE:f {: RESULT = new False(fleft); :}
+			  | ID:i {: RESULT = new IdentifierExp(ileft, i); :}
+			  | THIS:t {: RESULT = new This(tleft); :}
+			  | NEW:n INT LBRACK Exp:e RBRACK {: RESULT = new NewArray(nleft, e); :}
+			  | NEW:n ID:i LPAREN RPAREN {: RESULT = new NewObject(nleft, id(i)); :}
+			  | EXCLAMATION:ex Exp:e {: RESULT = new Not(exleft, e); :}
+			  | LPAREN Exp:e1 RPAREN {: RESULT = e1; :} ;
+			  
+			  
+ExpList		::= Exp:e
+				{:
+					ExpList lst = new ExpList();
+					lst.addElement(e);
+					RESULT = lst;
+				:}
+			  | ExpRest:eR COMMA Exp:e {: eR.addElement(e); RESULT = eR; :}
+			  | {: RESULT = new ExpList(); :};
+ExpRest		::= Exp:e
+				{:
+					ExpList lst = new ExpList();
+					lst.addElement(e);
+					RESULT = lst;
+				:}
+			  | ExpRest:eR COMMA Exp:e {: eR.addElement(e); RESULT = eR; :} ;
+
+
