@@ -5,17 +5,15 @@ main:
 	save	%sp, -96, %sp
 L4:
 	mov	0, %o0
+	call calloc
 	mov	4, %o1
-	call	calloc
-	nop
 	mov	%o0, %l0
 	mov	%l0, %o0
+	call Fac$ComputeFac
 	mov	10, %o1
-	call	Fac$ComputeFac
-	nop
 	mov	%o0, %l1
 	mov	%l1, %o0
-	call	printInt
+	call printInt
 	nop
 	ba	L3
 	nop
@@ -32,17 +30,17 @@ L6:
 L1:
 	mov	%i1, %l0
 	mov	%i0, %o0
+	call Fac$ComputeFac
 	sub	%i1, 1, %o1
-	call	Fac$ComputeFac
-	nop
 	mov	%o0, %l1
 	smul	%l0, %l1, %l2
+	mov	%l2, %l3
 L2:
-	mov	%l2, %i0
+	mov	%l3, %i0
 	ba	L5
 	nop
 L0:
-	mov	1, %l2
+	mov	1, %l3
 	ba	L2
 	nop
 L5:
